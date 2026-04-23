@@ -1,0 +1,4 @@
+{
+  "type": "oneday",
+  "builder": "@ali/builder-oneday"
+}

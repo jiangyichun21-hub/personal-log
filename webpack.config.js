@@ -5,6 +5,7 @@ module.exports = {
   mode: 'development',
   entry: './src/index.tsx',
   output: {
+    publicPath: process.env.PUBLIC_PATH || '',
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
