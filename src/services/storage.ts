@@ -18,8 +18,8 @@ export const storageService = {
     return this.getUsers().find((u) => u.id === id) ?? null;
   },
 
-  getUserByEmail(email: string): User | null {
-    return this.getUsers().find((u) => u.email === email) ?? null;
+  getUserByUsername(username: string): User | null {
+    return this.getUsers().find((u) => u.username === username) ?? null;
   },
 
   createUser(user: User): void {

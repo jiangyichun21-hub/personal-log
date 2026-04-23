@@ -96,7 +96,7 @@ export const ProfilePage = () => {
               ) : (
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#5b21b6', marginBottom: '0.25rem' }}>{currentUser.username}</h2>
               )}
-              <p style={{ fontSize: '0.8125rem', color: '#c084fc', fontWeight: 600 }}>{currentUser.email}</p>
+              <p style={{ fontSize: '0.8125rem', color: '#c084fc', fontWeight: 600 }}>🌸 日记本成员</p>
             </div>
           </div>
 

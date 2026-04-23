@@ -3,7 +3,6 @@ export type JournalVisibility = 'private' | 'friends' | 'public';
 export interface User {
   id: string;
   username: string;
-  email: string;
   password: string;
   avatar: string;
   bio: string;

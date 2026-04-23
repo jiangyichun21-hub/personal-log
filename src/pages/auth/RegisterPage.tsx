@@ -6,7 +6,6 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
   const { register } = useAuth();
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -14,7 +13,7 @@ export const RegisterPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!username || !email || !password || !confirmPassword) {
+    if (!username || !password || !confirmPassword) {
       setError('请填写所有字段 🥺');
       return;
     }
@@ -29,7 +28,7 @@ export const RegisterPage = () => {
     setIsLoading(true);
     setError('');
     try {
-      await register(username, email, password);
+      await register(username, password);
       navigate('/journals', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : '注册失败');
@@ -40,7 +39,6 @@ export const RegisterPage = () => {
 
   const fields = [
     { label: '🐣 用户名', value: username, setter: setUsername, type: 'text', placeholder: '给自己起个可爱的名字~' },
-    { label: '📮 邮箱', value: email, setter: setEmail, type: 'email', placeholder: '输入邮箱地址~' },
     { label: '🔑 密码', value: password, setter: setPassword, type: 'password', placeholder: '至少6位密码~' },
     { label: '🔑 确认密码', value: confirmPassword, setter: setConfirmPassword, type: 'password', placeholder: '再输一次密码~' },
   ];
@@ -140,9 +138,7 @@ export const RegisterPage = () => {
             disabled={isLoading}
             style={{
               height: '3rem',
-              background: isLoading
-                ? '#e9d5ff'
-                : 'linear-gradient(135deg, #f472b6, #a855f7)',
+              background: isLoading ? '#e9d5ff' : 'linear-gradient(135deg, #f472b6, #a855f7)',
               border: 'none',
               borderRadius: '1.25rem',
               color: '#fff',

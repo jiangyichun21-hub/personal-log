@@ -34,7 +34,7 @@ export const FriendsPage = () => {
 
   const handleSearch = () => {
     if (!searchEmail.trim() || !currentUser) return;
-    const found = storageService.getUserByEmail(searchEmail.trim());
+    const found = storageService.getUserByUsername(searchEmail.trim());
     if (!found || found.id === currentUser.id) {
       setSearchResult('not-found');
     } else {
@@ -151,14 +151,14 @@ export const FriendsPage = () => {
           <div>
             <div style={{ padding: '1rem', background: '#fff', borderBottom: '2px solid #f3d6ff' }}>
               <p style={{ fontSize: '0.8125rem', color: '#c084fc', marginBottom: '0.75rem', fontWeight: 600 }}>
-                🔍 通过邮箱搜索并添加好友
+                🔍 通过用户名搜索并添加好友
               </p>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <input
                   value={searchEmail}
                   onChange={(e) => { setSearchEmail(e.target.value); setSearchResult(null); }}
-                  placeholder="输入对方邮箱~"
-                  type="email"
+                  placeholder="输入对方用户名~"
+                  type="text"
                   style={{ flex: 1, height: '2.75rem', padding: '0 0.875rem', border: '2px solid #f3d6ff', borderRadius: '1rem', fontSize: '0.875rem', outline: 'none', background: '#fdf4ff', color: '#5b21b6', fontWeight: 600 }}
                   onFocus={(e) => (e.target.style.borderColor = '#c084fc')}
                   onBlur={(e) => (e.target.style.borderColor = '#f3d6ff')}
@@ -181,7 +181,7 @@ export const FriendsPage = () => {
                   <img src={searchResult.avatar} alt={searchResult.username} style={{ width: '2.75rem', height: '2.75rem', borderRadius: '50%', background: '#f5eeff', border: '2px solid #f3d6ff' }} />
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#5b21b6' }}>{searchResult.username}</div>
-                    <div style={{ fontSize: '0.8125rem', color: '#c084fc', fontWeight: 600 }}>{searchResult.email}</div>
+                    <div style={{ fontSize: '0.8125rem', color: '#c084fc', fontWeight: 600 }}>🌸 日记本成员</div>
                   </div>
                   {isFriend(searchResult.id) ? (
                     <span style={{ fontSize: '0.8125rem', color: '#a855f7', fontWeight: 700 }}>✅ 已是好友</span>
@@ -212,7 +212,7 @@ export const FriendsPage = () => {
                     <img src={friend.avatar} alt={friend.username} style={{ width: '2.75rem', height: '2.75rem', borderRadius: '50%', background: '#f5eeff', border: '2px solid #f3d6ff' }} />
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#5b21b6' }}>{friend.username}</div>
-                      <div style={{ fontSize: '0.8125rem', color: '#c084fc', fontWeight: 600 }}>{friend.email}</div>
+                      <div style={{ fontSize: '0.8125rem', color: '#c084fc', fontWeight: 600 }}>🌸 日记本成员</div>
                     </div>
                     <button
                       onClick={() => handleRemoveFriend(friend.id)}

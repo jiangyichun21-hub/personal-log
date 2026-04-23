@@ -5,8 +5,8 @@ import { storageService } from '@/services/storage';
 interface AuthContextValue {
   currentUser: User | null;
   isLoggedIn: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (username: string, email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
+  register: (username: string, password: string) => Promise<void>;
   logout: () => void;
   updateCurrentUser: (user: User) => void;
 }
@@ -33,13 +33,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setCurrentUser(user);
   };
 
-  const register = async (username: string, email: string, password: string) => {
-    const existing = storageService.getUserByEmail(email);
-    if (existing) throw new Error('该邮箱已被注册');
+  const register = async (username: string, password: string) => {
+    const existing = storageService.getUserByUsername(username);
+    if (existing) throw new Error('该用户名已被注册');
     const newUser: User = {
       id: storageService.generateId(),
       username,
-      email,
       password,
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
       bio: '',
