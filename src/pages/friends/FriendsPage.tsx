@@ -143,7 +143,7 @@ export const FriendsPage = () => {
                   position: 'absolute',
                   top: '0.5rem',
                   right: '0.375rem',
-                  background: 'var(--color-accent)',
+                  background: 'var(--color-primary)',
                   color: '#fff',
                   borderRadius: '50%',
                   width: '1.125rem',
@@ -167,9 +167,9 @@ export const FriendsPage = () => {
           <div>
             {friends.length === 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '5rem 1rem', gap: '0.875rem' }}>
-                <div style={{ width: '3.5rem', height: '3.5rem', background: 'var(--color-surface-2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '3.5rem', height: '3.5rem', background: 'var(--color-primary-pale)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="#b09fd8"/>
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="var(--color-primary)"/>
                   </svg>
                 </div>
                 <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', fontWeight: 600, textAlign: 'center' }}>
@@ -215,7 +215,7 @@ export const FriendsPage = () => {
                         fill="none"
                         style={{ transform: expandedFriendId === friend.id ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s', flexShrink: 0 }}
                       >
-                        <path d="M6 9l6 6 6-6" stroke="#b09fd8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M6 9l6 6 6-6" stroke="var(--color-text-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
 
@@ -284,7 +284,7 @@ export const FriendsPage = () => {
                         </button>
                         <button
                           onClick={() => handleAcceptRequest(req)}
-                          style={{ padding: '0.375rem 0.75rem', background: 'linear-gradient(135deg, #7c3aed, #a855f7)', border: 'none', borderRadius: 'var(--radius-sm)', color: '#fff', fontSize: '0.75rem', fontWeight: 800, cursor: 'pointer', boxShadow: 'var(--shadow-btn)' }}
+                          style={{ padding: '0.375rem 0.75rem', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', border: 'none', borderRadius: 'var(--radius-sm)', color: '#fff', fontSize: '0.75rem', fontWeight: 800, cursor: 'pointer', boxShadow: 'var(--shadow-btn)' }}
                         >
                           同意
                         </button>
@@ -338,13 +338,13 @@ export const FriendsPage = () => {
                   placeholder="输入对方用户名"
                   type="text"
                   style={{ flex: 1, height: '2.75rem', padding: '0 0.875rem', border: '1.5px solid var(--color-border)', borderRadius: 'var(--radius-md)', fontSize: '0.875rem', outline: 'none', background: 'var(--color-surface-2)', color: 'var(--color-text-primary)', fontWeight: 600, transition: 'border-color 0.2s' }}
-                  onFocus={(e) => (e.target.style.borderColor = 'var(--color-primary-light)')}
+                  onFocus={(e) => (e.target.style.borderColor = 'var(--color-primary)')}
                   onBlur={(e) => (e.target.style.borderColor = 'var(--color-border)')}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                 />
                 <button
                   onClick={handleSearch}
-                  style={{ height: '2.75rem', padding: '0 1rem', background: 'linear-gradient(135deg, #7c3aed, #a855f7)', border: 'none', borderRadius: 'var(--radius-md)', color: '#fff', fontSize: '0.875rem', fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: 'var(--shadow-btn)' }}
+                  style={{ height: '2.75rem', padding: '0 1rem', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', border: 'none', borderRadius: 'var(--radius-md)', color: '#fff', fontSize: '0.875rem', fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: 'var(--shadow-btn)' }}
                 >
                   搜索
                 </button>
@@ -370,7 +370,7 @@ export const FriendsPage = () => {
                   ) : (
                     <button
                       onClick={() => handleSendRequest((searchResult as User).id)}
-                      style={{ padding: '0.375rem 0.875rem', background: 'linear-gradient(135deg, #7c3aed, #a855f7)', border: 'none', borderRadius: 'var(--radius-sm)', color: '#fff', fontSize: '0.8125rem', fontWeight: 800, cursor: 'pointer', boxShadow: 'var(--shadow-btn)', flexShrink: 0 }}
+                      style={{ padding: '0.375rem 0.875rem', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', border: 'none', borderRadius: 'var(--radius-sm)', color: '#fff', fontSize: '0.8125rem', fontWeight: 800, cursor: 'pointer', boxShadow: 'var(--shadow-btn)', flexShrink: 0 }}
                     >
                       申请
                     </button>

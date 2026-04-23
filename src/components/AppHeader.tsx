@@ -25,7 +25,7 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        background: 'rgba(250, 247, 255, 0.94)',
+        background: 'rgba(253, 246, 238, 0.94)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: '1px solid var(--color-border)',
@@ -40,7 +40,7 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
         <button
           onClick={handleBack}
           style={{
-            background: 'var(--color-surface-2)',
+            background: 'var(--color-surface)',
             border: '1px solid var(--color-border)',
             cursor: 'pointer',
             width: '2rem',
@@ -53,6 +53,7 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
             fontSize: '1.125rem',
             fontWeight: 700,
             flexShrink: 0,
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           ‹
@@ -66,7 +67,7 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
           textAlign: 'center',
           fontSize: '1rem',
           fontWeight: 800,
-          color: 'var(--color-primary)',
+          color: 'var(--color-text-primary)',
           letterSpacing: '0.01em',
         }}
       >

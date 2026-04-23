@@ -52,8 +52,8 @@ export const RegisterPage = () => {
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.style.borderColor = 'var(--color-primary-light)';
-    e.target.style.boxShadow = '0 0 0 3px rgba(168, 85, 247, 0.15)';
+    e.target.style.borderColor = 'var(--color-primary)';
+    e.target.style.boxShadow = '0 0 0 3px rgba(240, 112, 64, 0.15)';
     e.target.style.background = '#fff';
   };
 
@@ -72,7 +72,7 @@ export const RegisterPage = () => {
         justifyContent: 'center',
         minHeight: '100vh',
         padding: '2rem 1.5rem',
-        background: 'linear-gradient(170deg, #faf7ff 0%, #f3e8ff 40%, #fce7f3 100%)',
+        background: 'linear-gradient(160deg, #fdf6ee 0%, #fce8d5 60%, #fbd5b5 100%)',
       }}
     >
       <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
@@ -80,13 +80,13 @@ export const RegisterPage = () => {
           style={{
             width: '4.5rem',
             height: '4.5rem',
-            background: 'linear-gradient(135deg, #a855f7, #ec4899)',
+            background: 'linear-gradient(135deg, var(--color-accent), var(--color-primary))',
             borderRadius: '1.25rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 1rem',
-            boxShadow: '0 8px 24px rgba(168, 85, 247, 0.35)',
+            boxShadow: 'var(--shadow-btn)',
           }}
         >
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
@@ -97,7 +97,7 @@ export const RegisterPage = () => {
           style={{
             fontSize: '1.75rem',
             fontWeight: 900,
-            color: 'var(--color-primary)',
+            color: 'var(--color-text-primary)',
             marginBottom: '0.25rem',
             letterSpacing: '-0.02em',
           }}
@@ -111,11 +111,12 @@ export const RegisterPage = () => {
 
       <div
         style={{
-          background: 'rgba(255, 255, 255, 0.9)',
+          background: 'rgba(255, 255, 255, 0.88)',
           borderRadius: 'var(--radius-2xl)',
           padding: '1.5rem',
-          boxShadow: '0 4px 40px rgba(124, 58, 237, 0.1)',
+          boxShadow: '0 8px 40px rgba(180, 100, 40, 0.12)',
           border: '1px solid var(--color-border)',
+          backdropFilter: 'blur(12px)',
         }}
       >
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
@@ -187,7 +188,7 @@ export const RegisterPage = () => {
               height: '3rem',
               background: isLoading
                 ? 'var(--color-primary-pale)'
-                : 'linear-gradient(135deg, #a855f7, #ec4899)',
+                : 'linear-gradient(135deg, var(--color-accent), var(--color-primary))',
               border: 'none',
               borderRadius: 'var(--radius-md)',
               color: isLoading ? 'var(--color-text-muted)' : '#fff',
@@ -195,7 +196,7 @@ export const RegisterPage = () => {
               fontWeight: 800,
               cursor: isLoading ? 'not-allowed' : 'pointer',
               marginTop: '0.25rem',
-              boxShadow: isLoading ? 'none' : '0 4px 14px rgba(168, 85, 247, 0.38)',
+              boxShadow: isLoading ? 'none' : 'var(--shadow-btn)',
               letterSpacing: '0.04em',
             }}
           >

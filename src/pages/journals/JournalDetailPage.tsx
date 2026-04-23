@@ -39,7 +39,7 @@ export const JournalDetailPage = () => {
             style={{
               width: '3.5rem',
               height: '3.5rem',
-              background: 'var(--color-surface-2)',
+              background: 'var(--color-primary-pale)',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
@@ -47,7 +47,7 @@ export const JournalDetailPage = () => {
             }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="#b09fd8" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
           <p style={{ color: 'var(--color-text-muted)', fontWeight: 600, fontSize: '0.9rem' }}>日记不存在</p>
@@ -74,8 +74,8 @@ export const JournalDetailPage = () => {
               <button
                 onClick={() => navigate(`/journal/${journal.id}/edit`)}
                 style={{
-                  background: 'var(--color-surface-2)',
-                  border: '1px solid var(--color-border)',
+                  background: 'var(--color-primary-pale)',
+                  border: '1px solid var(--color-border-dashed)',
                   borderRadius: 'var(--radius-sm)',
                   padding: '0.3rem 0.75rem',
                   color: 'var(--color-primary)',
@@ -107,8 +107,16 @@ export const JournalDetailPage = () => {
       />
 
       <div style={{ padding: '1.25rem 1rem 4rem' }}>
-        <div style={{ marginBottom: '0.75rem' }}>
+        <div style={{ marginBottom: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
           <VisibilityBadge visibility={journal.visibility} />
+          <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
+            {dayjs(journal.createdAt).format('YYYY年MM月DD日 HH:mm')}
+          </span>
+          {journal.updatedAt !== journal.createdAt && (
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-placeholder)', fontWeight: 600 }}>
+              · 编辑于 {dayjs(journal.updatedAt).format('MM月DD日')}
+            </span>
+          )}
         </div>
 
         <h1
@@ -116,7 +124,7 @@ export const JournalDetailPage = () => {
             fontSize: '1.5rem',
             fontWeight: 900,
             color: 'var(--color-text-primary)',
-            marginBottom: '0.5rem',
+            marginBottom: '1.25rem',
             lineHeight: 1.35,
             letterSpacing: '-0.01em',
           }}
@@ -126,36 +134,32 @@ export const JournalDetailPage = () => {
 
         <div
           style={{
-            display: 'flex',
-            gap: '0.75rem',
-            marginBottom: '1.5rem',
-            color: 'var(--color-text-placeholder)',
-            fontSize: '0.8125rem',
-            fontWeight: 600,
-          }}
-        >
-          <span>{dayjs(journal.createdAt).format('YYYY年MM月DD日 HH:mm')}</span>
-          {journal.updatedAt !== journal.createdAt && (
-            <span>· 编辑于 {dayjs(journal.updatedAt).format('MM月DD日')}</span>
-          )}
-        </div>
-
-        <div
-          style={{
             background: 'var(--color-surface)',
             borderRadius: 'var(--radius-xl)',
-            padding: '1.25rem',
+            padding: '1.375rem 1.25rem',
             border: '1px solid var(--color-border)',
             boxShadow: 'var(--shadow-sm)',
             fontSize: '1rem',
             color: 'var(--color-text-primary)',
-            lineHeight: 1.9,
+            lineHeight: 2,
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-word',
             fontWeight: 500,
-            minHeight: '8rem',
+            minHeight: '10rem',
+            position: 'relative',
           }}
         >
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: '3px',
+              background: 'linear-gradient(to bottom, var(--color-primary), var(--color-accent))',
+              borderRadius: '3px 0 0 3px',
+            }}
+          />
           {journal.content || (
             <span style={{ color: 'var(--color-text-placeholder)' }}>暂无内容</span>
           )}
@@ -167,7 +171,7 @@ export const JournalDetailPage = () => {
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(59, 26, 110, 0.35)',
+            background: 'rgba(45, 31, 14, 0.4)',
             display: 'flex',
             alignItems: 'flex-end',
             zIndex: 200,

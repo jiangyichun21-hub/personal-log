@@ -37,7 +37,7 @@ export const LoginPage = () => {
         justifyContent: 'center',
         minHeight: '100vh',
         padding: '2rem 1.5rem',
-        background: 'linear-gradient(170deg, #faf7ff 0%, #f3e8ff 40%, #fce7f3 100%)',
+        background: 'linear-gradient(160deg, #fdf6ee 0%, #fce8d5 60%, #fbd5b5 100%)',
       }}
     >
       <div style={{ marginBottom: '2.75rem', textAlign: 'center' }}>
@@ -45,17 +45,16 @@ export const LoginPage = () => {
           style={{
             width: '5rem',
             height: '5rem',
-            background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+            background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
             borderRadius: '1.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 1.25rem',
-            boxShadow: '0 8px 28px rgba(124, 58, 237, 0.38)',
+            boxShadow: 'var(--shadow-btn)',
           }}
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="white" opacity="0.3"/>
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
             <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="white"/>
           </svg>
         </div>
@@ -63,7 +62,7 @@ export const LoginPage = () => {
           style={{
             fontSize: '2rem',
             fontWeight: 900,
-            color: 'var(--color-primary)',
+            color: 'var(--color-text-primary)',
             marginBottom: '0.375rem',
             letterSpacing: '-0.02em',
           }}
@@ -77,11 +76,12 @@ export const LoginPage = () => {
 
       <div
         style={{
-          background: 'rgba(255, 255, 255, 0.9)',
+          background: 'rgba(255, 255, 255, 0.88)',
           borderRadius: 'var(--radius-2xl)',
           padding: '1.75rem 1.5rem',
-          boxShadow: '0 4px 40px rgba(124, 58, 237, 0.1)',
+          boxShadow: '0 8px 40px rgba(180, 100, 40, 0.12)',
           border: '1px solid var(--color-border)',
+          backdropFilter: 'blur(12px)',
         }}
       >
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -117,8 +117,8 @@ export const LoginPage = () => {
                 transition: 'border-color 0.2s, box-shadow 0.2s',
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = 'var(--color-primary-light)';
-                e.target.style.boxShadow = '0 0 0 3px rgba(168, 85, 247, 0.15)';
+                e.target.style.borderColor = 'var(--color-primary)';
+                e.target.style.boxShadow = '0 0 0 3px rgba(240, 112, 64, 0.15)';
                 e.target.style.background = '#fff';
               }}
               onBlur={(e) => {
@@ -161,8 +161,8 @@ export const LoginPage = () => {
                 transition: 'border-color 0.2s, box-shadow 0.2s',
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = 'var(--color-primary-light)';
-                e.target.style.boxShadow = '0 0 0 3px rgba(168, 85, 247, 0.15)';
+                e.target.style.borderColor = 'var(--color-primary)';
+                e.target.style.boxShadow = '0 0 0 3px rgba(240, 112, 64, 0.15)';
                 e.target.style.background = '#fff';
               }}
               onBlur={(e) => {
@@ -196,7 +196,7 @@ export const LoginPage = () => {
               height: '3rem',
               background: isLoading
                 ? 'var(--color-primary-pale)'
-                : 'linear-gradient(135deg, #7c3aed, #a855f7)',
+                : 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
               border: 'none',
               borderRadius: 'var(--radius-md)',
               color: isLoading ? 'var(--color-text-muted)' : '#fff',

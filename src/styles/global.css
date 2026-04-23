@@ -1,29 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Serif+SC:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
 
 :root {
-  --color-bg: #faf7ff;
+  --color-bg: #fdf6ee;
+  --color-bg-gradient: linear-gradient(160deg, #fdf6ee 0%, #fce8d5 100%);
   --color-surface: #ffffff;
-  --color-surface-2: #f5f0ff;
-  --color-border: #ede5ff;
-  --color-border-strong: #d8c8ff;
-  --color-primary: #7c3aed;
-  --color-primary-light: #a855f7;
-  --color-primary-pale: #e9d5ff;
-  --color-accent: #ec4899;
-  --color-accent-light: #f472b6;
-  --color-text-primary: #3b1a6e;
-  --color-text-secondary: #7c5cbf;
-  --color-text-muted: #b09fd8;
-  --color-text-placeholder: #c4b5e8;
+  --color-surface-2: #fef9f4;
+  --color-border: #f0e0cc;
+  --color-border-dashed: #e8c9a8;
+  --color-primary: #f07040;
+  --color-primary-light: #f59060;
+  --color-primary-pale: #fde8d8;
+  --color-accent: #e8956d;
+  --color-accent-light: #f0a882;
+  --color-tag-bg: #fdecd8;
+  --color-tag-text: #c06030;
+  --color-text-primary: #2d1f0e;
+  --color-text-secondary: #7a5c3a;
+  --color-text-muted: #b89070;
+  --color-text-placeholder: #c8a880;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-2xl: 24px;
-  --shadow-sm: 0 1px 4px rgba(124, 58, 237, 0.06);
-  --shadow-md: 0 4px 16px rgba(124, 58, 237, 0.1);
-  --shadow-lg: 0 8px 32px rgba(124, 58, 237, 0.14);
-  --shadow-btn: 0 4px 14px rgba(124, 58, 237, 0.35);
+  --shadow-sm: 0 1px 4px rgba(180, 100, 40, 0.06);
+  --shadow-md: 0 4px 16px rgba(180, 100, 40, 0.08);
+  --shadow-lg: 0 8px 32px rgba(180, 100, 40, 0.12);
+  --shadow-btn: 0 6px 20px rgba(240, 112, 64, 0.4);
 }
 
 html {
@@ -31,11 +34,11 @@ html {
 }
 
 body {
-  background: var(--color-bg);
+  background: var(--color-bg-gradient);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
   color: var(--color-text-primary);
 }
 
@@ -50,7 +53,7 @@ body {
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
-  background: var(--color-bg);
+  background: var(--color-bg-gradient);
   position: relative;
 }
 

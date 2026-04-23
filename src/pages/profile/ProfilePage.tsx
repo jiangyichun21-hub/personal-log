@@ -34,10 +34,10 @@ export const ProfilePage = () => {
   };
 
   const statItems = [
-    { label: '全部', value: journals.length, color: '#7c3aed', bg: '#f0ebff' },
-    { label: '私密', value: privateCount, color: '#7c5cbf', bg: '#f0ebff' },
-    { label: '好友', value: friendsCount, color: '#be4b8a', bg: '#fce7f3' },
-    { label: '公开', value: publicCount, color: '#0369a1', bg: '#e0f2fe' },
+    { label: '全部', value: journals.length, color: 'var(--color-primary)', bg: 'var(--color-primary-pale)' },
+    { label: '私密', value: privateCount, color: '#a05020', bg: '#fdecd8' },
+    { label: '好友', value: friendsCount, color: '#c06030', bg: '#fef3e8' },
+    { label: '公开', value: publicCount, color: '#2d7a4a', bg: '#e8f5ee' },
   ];
 
   return (
@@ -66,7 +66,7 @@ export const ProfilePage = () => {
       <div style={{ paddingBottom: '5rem' }}>
         <div
           style={{
-            background: 'linear-gradient(160deg, #f5f0ff 0%, #fce7f3 100%)',
+            background: 'linear-gradient(160deg, #fef3e8 0%, #fdecd8 100%)',
             padding: '1.75rem 1.25rem 1.5rem',
             position: 'relative',
             overflow: 'hidden',
@@ -79,7 +79,7 @@ export const ProfilePage = () => {
               right: '-2rem',
               width: '8rem',
               height: '8rem',
-              background: 'rgba(168, 85, 247, 0.08)',
+              background: 'rgba(240, 112, 64, 0.08)',
               borderRadius: '50%',
             }}
           />
@@ -90,7 +90,7 @@ export const ProfilePage = () => {
               left: '-1rem',
               width: '5rem',
               height: '5rem',
-              background: 'rgba(236, 72, 153, 0.06)',
+              background: 'rgba(232, 149, 109, 0.06)',
               borderRadius: '50%',
             }}
           />
@@ -105,7 +105,7 @@ export const ProfilePage = () => {
                   height: '4.5rem',
                   borderRadius: '50%',
                   border: '3px solid #fff',
-                  boxShadow: '0 4px 16px rgba(124, 58, 237, 0.2)',
+                  boxShadow: '0 4px 16px rgba(180, 100, 40, 0.2)',
                   background: 'var(--color-surface-2)',
                 }}
               />
@@ -116,7 +116,7 @@ export const ProfilePage = () => {
                   right: 0,
                   width: '1.25rem',
                   height: '1.25rem',
-                  background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+                  background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
                   borderRadius: '50%',
                   border: '2px solid #fff',
                 }}
@@ -130,7 +130,7 @@ export const ProfilePage = () => {
                   style={{
                     fontSize: '1.125rem',
                     fontWeight: 800,
-                    border: '1.5px solid var(--color-primary-light)',
+                    border: '1.5px solid var(--color-primary)',
                     borderRadius: 'var(--radius-sm)',
                     padding: '0.25rem 0.625rem',
                     outline: 'none',
@@ -138,7 +138,7 @@ export const ProfilePage = () => {
                     marginBottom: '0.25rem',
                     background: '#fff',
                     color: 'var(--color-text-primary)',
-                    boxShadow: '0 0 0 3px rgba(168, 85, 247, 0.15)',
+                    boxShadow: '0 0 0 3px rgba(240, 112, 64, 0.15)',
                   }}
                 />
               ) : (
@@ -173,7 +173,7 @@ export const ProfilePage = () => {
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1.5px solid var(--color-primary-light)',
+                  border: '1.5px solid var(--color-primary)',
                   borderRadius: 'var(--radius-md)',
                   fontSize: '0.875rem',
                   outline: 'none',
@@ -184,7 +184,7 @@ export const ProfilePage = () => {
                   background: '#fff',
                   color: 'var(--color-text-primary)',
                   fontWeight: 500,
-                  boxShadow: '0 0 0 3px rgba(168, 85, 247, 0.15)',
+                  boxShadow: '0 0 0 3px rgba(240, 112, 64, 0.15)',
                 }}
               />
               <div style={{ display: 'flex', gap: '0.625rem' }}>
@@ -211,7 +211,7 @@ export const ProfilePage = () => {
                     height: '2.5rem',
                     border: 'none',
                     borderRadius: 'var(--radius-md)',
-                    background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+                    background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
                     fontSize: '0.875rem',
                     cursor: 'pointer',
                     color: '#fff',
@@ -233,7 +233,7 @@ export const ProfilePage = () => {
               <button
                 onClick={() => setIsEditing(true)}
                 style={{
-                  background: 'rgba(255,255,255,0.8)',
+                  background: 'rgba(255,255,255,0.85)',
                   border: '1px solid var(--color-border)',
                   borderRadius: 'var(--radius-sm)',
                   padding: '0.25rem 0.625rem',
@@ -296,12 +296,14 @@ export const ProfilePage = () => {
               borderRadius: 'var(--radius-lg)',
               border: '1px solid var(--color-border)',
               overflow: 'hidden',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
             <div
               style={{
                 padding: '0.875rem 1rem',
                 borderBottom: '1px solid var(--color-border)',
+                background: 'var(--color-surface-2)',
               }}
             >
               <h3 style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '0.01em' }}>

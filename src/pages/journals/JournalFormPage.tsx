@@ -12,9 +12,9 @@ const VISIBILITY_OPTIONS: { value: JournalVisibility; label: string; desc: strin
 ];
 
 const VISIBILITY_COLORS: Record<JournalVisibility, { color: string; bg: string; border: string }> = {
-  private: { color: '#7c5cbf', bg: '#f0ebff', border: '#d8c8ff' },
-  friends: { color: '#be4b8a', bg: '#fce7f3', border: '#f9a8d4' },
-  public: { color: '#0369a1', bg: '#e0f2fe', border: '#7dd3fc' },
+  private: { color: '#a05020', bg: '#fdecd8', border: '#f0c898' },
+  friends: { color: '#c06030', bg: '#fef3e8', border: '#f5c8a0' },
+  public: { color: '#2d7a4a', bg: '#e8f5ee', border: '#a8d8b8' },
 };
 
 export const JournalFormPage = () => {
@@ -84,7 +84,7 @@ export const JournalFormPage = () => {
             style={{
               background: isSaving
                 ? 'var(--color-primary-pale)'
-                : 'linear-gradient(135deg, #7c3aed, #a855f7)',
+                : 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
               border: 'none',
               borderRadius: 'var(--radius-sm)',
               padding: '0.35rem 0.875rem',
@@ -133,7 +133,7 @@ export const JournalFormPage = () => {
             resize: 'none',
             background: 'var(--color-bg)',
             color: 'var(--color-text-primary)',
-            lineHeight: 1.9,
+            lineHeight: 2,
             fontFamily: 'inherit',
             fontWeight: 500,
           }}
@@ -144,7 +144,7 @@ export const JournalFormPage = () => {
         style={{
           borderTop: '1px solid var(--color-border)',
           padding: '0.75rem 1rem',
-          background: 'rgba(250, 247, 255, 0.97)',
+          background: 'rgba(253, 246, 238, 0.97)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -182,7 +182,7 @@ export const JournalFormPage = () => {
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(59, 26, 110, 0.3)',
+            background: 'rgba(45, 31, 14, 0.35)',
             display: 'flex',
             alignItems: 'flex-end',
             zIndex: 200,
@@ -207,7 +207,7 @@ export const JournalFormPage = () => {
               style={{
                 width: '2.5rem',
                 height: '3px',
-                background: 'var(--color-border-strong)',
+                background: 'var(--color-border-dashed)',
                 borderRadius: '2px',
                 margin: '0 auto 1.25rem',
               }}
