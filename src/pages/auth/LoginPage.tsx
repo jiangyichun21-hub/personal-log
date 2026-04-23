@@ -5,21 +5,21 @@ import { useAuth } from '@/contexts/AuthContext';
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError('请填写邮箱和密码');
+    if (!username || !password) {
+      setError('请填写用户名和密码');
       return;
     }
     setIsLoading(true);
     setError('');
     try {
-      await login(email, password);
+      await login(username, password);
       navigate('/journals', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : '登录失败');
@@ -42,12 +42,12 @@ export const LoginPage = () => {
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', color: '#595959', marginBottom: '0.375rem', fontWeight: 500 }}>邮箱</label>
+          <label style={{ display: 'block', fontSize: '0.875rem', color: '#595959', marginBottom: '0.375rem', fontWeight: 500 }}>用户名</label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="请输入邮箱"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="请输入用户名"
             style={{ width: '100%', height: '2.75rem', padding: '0 0.875rem', border: '1.5px solid #e5e6eb', borderRadius: '0.625rem', fontSize: '0.9375rem', outline: 'none', background: '#fafafa', transition: 'border-color 0.2s' }}
             onFocus={(e) => (e.target.style.borderColor = '#1677ff')}
             onBlur={(e) => (e.target.style.borderColor = '#e5e6eb')}

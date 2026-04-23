@@ -24,9 +24,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const user = storageService.getUserByEmail(email);
-    if (!user) throw new Error('该邮箱未注册');
+  const login = async (username: string, password: string) => {
+    const users = storageService.getUsers();
+    const user = users.find((u) => u.username === username) ?? null;
+    if (!user) throw new Error('该用户名不存在');
     if (user.password !== password) throw new Error('密码错误');
     storageService.setCurrentUserId(user.id);
     setCurrentUser(user);
