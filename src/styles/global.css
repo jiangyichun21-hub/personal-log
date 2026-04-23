@@ -1,39 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+
 html {
   font-size: 16px;
 }
 
 body {
-  background: #f7f8fa;
+  background: #fdf4ff;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
 }
 
 * {
   -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
 }
 
 .page-container {
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
-  background: #ffffff;
+  background: #fdf4ff;
   position: relative;
-}
-
-.safe-area {
-  padding: 0 1rem;
 }
 
 .scroll-container {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-}
-
-.smooth-transition {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.btn-active:active {
-  opacity: 0.75;
-  transform: scale(0.97);
 }

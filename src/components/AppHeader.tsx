@@ -25,11 +25,12 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        background: '#ffffff',
-        borderBottom: '1px solid #f0f0f0',
+        background: 'rgba(253, 244, 255, 0.92)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '2px solid #f3d6ff',
         display: 'flex',
         alignItems: 'center',
-        height: '3rem',
+        height: '3.25rem',
         padding: '0 1rem',
       }}
     >
@@ -37,15 +38,19 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
         <button
           onClick={handleBack}
           style={{
-            background: 'none',
+            background: 'linear-gradient(135deg, #f3d6ff, #e8c8ff)',
             border: 'none',
             cursor: 'pointer',
-            padding: '0.5rem',
-            marginLeft: '-0.5rem',
+            width: '2rem',
+            height: '2rem',
+            borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
-            color: '#1677ff',
-            fontSize: '1.25rem',
+            justifyContent: 'center',
+            color: '#b06fd8',
+            fontSize: '1.1rem',
+            fontWeight: 700,
+            flexShrink: 0,
           }}
         >
           ‹
@@ -54,11 +59,11 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
       <h1
         style={{
           flex: 1,
-          textAlign: showBack ? 'center' : 'left',
+          textAlign: 'center',
           fontSize: '1rem',
-          fontWeight: 600,
-          color: '#1a1a1a',
-          marginLeft: showBack ? '-1.5rem' : 0,
+          fontWeight: 800,
+          color: '#9b4dca',
+          letterSpacing: '0.02em',
         }}
       >
         {title}

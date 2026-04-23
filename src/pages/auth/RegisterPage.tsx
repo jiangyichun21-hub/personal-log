@@ -15,15 +15,15 @@ export const RegisterPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !email || !password || !confirmPassword) {
-      setError('请填写所有字段');
+      setError('请填写所有字段 🥺');
       return;
     }
     if (password !== confirmPassword) {
-      setError('两次密码输入不一致');
+      setError('两次密码输入不一致 😅');
       return;
     }
     if (password.length < 6) {
-      setError('密码至少需要6位');
+      setError('密码至少需要6位哦 🔐');
       return;
     }
     setIsLoading(true);
@@ -38,72 +38,131 @@ export const RegisterPage = () => {
     }
   };
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    height: '2.75rem',
-    padding: '0 0.875rem',
-    border: '1.5px solid #e5e6eb',
-    borderRadius: '0.625rem',
-    fontSize: '0.9375rem',
-    outline: 'none',
-    background: '#fafafa',
-    transition: 'border-color 0.2s',
-  };
+  const fields = [
+    { label: '🐣 用户名', value: username, setter: setUsername, type: 'text', placeholder: '给自己起个可爱的名字~' },
+    { label: '📮 邮箱', value: email, setter: setEmail, type: 'email', placeholder: '输入邮箱地址~' },
+    { label: '🔑 密码', value: password, setter: setPassword, type: 'password', placeholder: '至少6位密码~' },
+    { label: '🔑 确认密码', value: confirmPassword, setter: setConfirmPassword, type: 'password', placeholder: '再输一次密码~' },
+  ];
 
   return (
-    <div className="page-container" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '100vh', padding: '2rem 1.5rem' }}>
-      <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-        <div style={{ width: '4rem', height: '4rem', background: 'linear-gradient(135deg, #1677ff, #69b1ff)', borderRadius: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-          </svg>
+    <div
+      className="page-container"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        padding: '2rem 1.5rem',
+        background: 'linear-gradient(160deg, #fdf4ff 0%, #fff0fb 50%, #f0f4ff 100%)',
+      }}
+    >
+      <div style={{ marginBottom: '1.75rem', textAlign: 'center' }}>
+        <div
+          style={{
+            width: '5rem',
+            height: '5rem',
+            background: 'linear-gradient(135deg, #f472b6, #a855f7)',
+            borderRadius: '1.75rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 1rem',
+            boxShadow: '0 8px 24px rgba(244, 114, 182, 0.35)',
+            fontSize: '2.25rem',
+          }}
+        >
+          🌷
         </div>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1a1a1a', marginBottom: '0.25rem' }}>创建账号</h1>
-        <p style={{ color: '#8c8c8c', fontSize: '0.875rem' }}>开始记录你的生活</p>
+        <h1 style={{ fontSize: '1.625rem', fontWeight: 800, color: '#7c3aed', marginBottom: '0.25rem' }}>
+          加入小日记
+        </h1>
+        <p style={{ color: '#c084fc', fontSize: '0.875rem', fontWeight: 600 }}>开始记录你的美好生活 🌈</p>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-        {[
-          { label: '用户名', value: username, setter: setUsername, type: 'text', placeholder: '请输入用户名' },
-          { label: '邮箱', value: email, setter: setEmail, type: 'email', placeholder: '请输入邮箱' },
-          { label: '密码', value: password, setter: setPassword, type: 'password', placeholder: '至少6位密码' },
-          { label: '确认密码', value: confirmPassword, setter: setConfirmPassword, type: 'password', placeholder: '再次输入密码' },
-        ].map((field) => (
-          <div key={field.label}>
-            <label style={{ display: 'block', fontSize: '0.875rem', color: '#595959', marginBottom: '0.375rem', fontWeight: 500 }}>
-              {field.label}
-            </label>
-            <input
-              type={field.type}
-              value={field.value}
-              onChange={(e) => field.setter(e.target.value)}
-              placeholder={field.placeholder}
-              style={inputStyle}
-              onFocus={(e) => (e.target.style.borderColor = '#1677ff')}
-              onBlur={(e) => (e.target.style.borderColor = '#e5e6eb')}
-            />
-          </div>
-        ))}
+      <div
+        style={{
+          background: 'rgba(255,255,255,0.85)',
+          borderRadius: '1.75rem',
+          padding: '1.5rem',
+          boxShadow: '0 4px 32px rgba(168, 85, 247, 0.12)',
+          border: '2px solid #f3d6ff',
+        }}
+      >
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+          {fields.map((field) => (
+            <div key={field.label}>
+              <label style={{ display: 'block', fontSize: '0.8125rem', color: '#9b4dca', marginBottom: '0.35rem', fontWeight: 700 }}>
+                {field.label}
+              </label>
+              <input
+                type={field.type}
+                value={field.value}
+                onChange={(e) => field.setter(e.target.value)}
+                placeholder={field.placeholder}
+                style={{
+                  width: '100%',
+                  height: '2.875rem',
+                  padding: '0 1rem',
+                  border: '2px solid #f3d6ff',
+                  borderRadius: '1rem',
+                  fontSize: '0.9rem',
+                  outline: 'none',
+                  background: '#fdf4ff',
+                  color: '#5b21b6',
+                  fontWeight: 600,
+                  transition: 'border-color 0.2s, box-shadow 0.2s',
+                }}
+                onFocus={(e) => { e.target.style.borderColor = '#c084fc'; e.target.style.boxShadow = '0 0 0 3px rgba(192,132,252,0.2)'; }}
+                onBlur={(e) => { e.target.style.borderColor = '#f3d6ff'; e.target.style.boxShadow = 'none'; }}
+              />
+            </div>
+          ))}
 
-        {error && (
-          <div style={{ background: '#fff1f0', border: '1px solid #ffccc7', borderRadius: '0.5rem', padding: '0.625rem 0.875rem', color: '#ff4d4f', fontSize: '0.875rem' }}>
-            {error}
-          </div>
-        )}
+          {error && (
+            <div
+              style={{
+                background: '#fff0f6',
+                border: '2px solid #ffc8e0',
+                borderRadius: '0.875rem',
+                padding: '0.625rem 1rem',
+                color: '#d4608a',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+              }}
+            >
+              {error}
+            </div>
+          )}
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          style={{ height: '2.875rem', background: isLoading ? '#91caff' : 'linear-gradient(135deg, #1677ff, #4096ff)', border: 'none', borderRadius: '0.75rem', color: '#fff', fontSize: '1rem', fontWeight: 600, cursor: isLoading ? 'not-allowed' : 'pointer', marginTop: '0.25rem', transition: 'all 0.2s' }}
-        >
-          {isLoading ? '注册中...' : '注册'}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={isLoading}
+            style={{
+              height: '3rem',
+              background: isLoading
+                ? '#e9d5ff'
+                : 'linear-gradient(135deg, #f472b6, #a855f7)',
+              border: 'none',
+              borderRadius: '1.25rem',
+              color: '#fff',
+              fontSize: '1rem',
+              fontWeight: 800,
+              cursor: isLoading ? 'not-allowed' : 'pointer',
+              marginTop: '0.25rem',
+              boxShadow: isLoading ? 'none' : '0 4px 16px rgba(244, 114, 182, 0.4)',
+              letterSpacing: '0.05em',
+            }}
+          >
+            {isLoading ? '注册中 🌀' : '注册 🎉'}
+          </button>
+        </form>
+      </div>
 
-      <p style={{ textAlign: 'center', marginTop: '1.5rem', color: '#8c8c8c', fontSize: '0.875rem' }}>
+      <p style={{ textAlign: 'center', marginTop: '1.25rem', color: '#c084fc', fontSize: '0.875rem', fontWeight: 600 }}>
         已有账号？{' '}
-        <Link to="/login" style={{ color: '#1677ff', fontWeight: 500, textDecoration: 'none' }}>
-          立即登录
+        <Link to="/login" style={{ color: '#9b4dca', fontWeight: 800, textDecoration: 'none' }}>
+          去登录 ✨
         </Link>
       </p>
     </div>

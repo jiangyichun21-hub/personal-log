@@ -13,7 +13,7 @@ export const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !password) {
-      setError('请填写用户名和密码');
+      setError('请填写用户名和密码 🥺');
       return;
     }
     setIsLoading(true);
@@ -29,63 +29,149 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="page-container" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '100vh', padding: '2rem 1.5rem' }}>
+    <div
+      className="page-container"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        padding: '2rem 1.5rem',
+        background: 'linear-gradient(160deg, #fdf4ff 0%, #fff0fb 50%, #f0f4ff 100%)',
+      }}
+    >
       <div style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
-        <div style={{ width: '4rem', height: '4rem', background: 'linear-gradient(135deg, #1677ff, #69b1ff)', borderRadius: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-          </svg>
+        <div
+          style={{
+            width: '5.5rem',
+            height: '5.5rem',
+            background: 'linear-gradient(135deg, #e879f9, #a855f7)',
+            borderRadius: '2rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 1.25rem',
+            boxShadow: '0 8px 24px rgba(168, 85, 247, 0.35)',
+            fontSize: '2.5rem',
+          }}
+        >
+          🌸
         </div>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1a1a1a', marginBottom: '0.25rem' }}>日记本</h1>
-        <p style={{ color: '#8c8c8c', fontSize: '0.875rem' }}>记录每一个珍贵时刻</p>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#7c3aed', marginBottom: '0.375rem' }}>
+          小日记
+        </h1>
+        <p style={{ color: '#c084fc', fontSize: '0.9rem', fontWeight: 600 }}>记录每一个温柔的瞬间 ✨</p>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', color: '#595959', marginBottom: '0.375rem', fontWeight: 500 }}>用户名</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="请输入用户名"
-            style={{ width: '100%', height: '2.75rem', padding: '0 0.875rem', border: '1.5px solid #e5e6eb', borderRadius: '0.625rem', fontSize: '0.9375rem', outline: 'none', background: '#fafafa', transition: 'border-color 0.2s' }}
-            onFocus={(e) => (e.target.style.borderColor = '#1677ff')}
-            onBlur={(e) => (e.target.style.borderColor = '#e5e6eb')}
-          />
-        </div>
-
-        <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', color: '#595959', marginBottom: '0.375rem', fontWeight: 500 }}>密码</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="请输入密码"
-            style={{ width: '100%', height: '2.75rem', padding: '0 0.875rem', border: '1.5px solid #e5e6eb', borderRadius: '0.625rem', fontSize: '0.9375rem', outline: 'none', background: '#fafafa', transition: 'border-color 0.2s' }}
-            onFocus={(e) => (e.target.style.borderColor = '#1677ff')}
-            onBlur={(e) => (e.target.style.borderColor = '#e5e6eb')}
-          />
-        </div>
-
-        {error && (
-          <div style={{ background: '#fff1f0', border: '1px solid #ffccc7', borderRadius: '0.5rem', padding: '0.625rem 0.875rem', color: '#ff4d4f', fontSize: '0.875rem' }}>
-            {error}
+      <div
+        style={{
+          background: 'rgba(255,255,255,0.85)',
+          borderRadius: '1.75rem',
+          padding: '1.75rem 1.5rem',
+          boxShadow: '0 4px 32px rgba(168, 85, 247, 0.12)',
+          border: '2px solid #f3d6ff',
+        }}
+      >
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.875rem', color: '#9b4dca', marginBottom: '0.4rem', fontWeight: 700 }}>
+              🐣 用户名
+            </label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="输入你的昵称~"
+              style={{
+                width: '100%',
+                height: '3rem',
+                padding: '0 1rem',
+                border: '2px solid #f3d6ff',
+                borderRadius: '1rem',
+                fontSize: '0.9375rem',
+                outline: 'none',
+                background: '#fdf4ff',
+                color: '#5b21b6',
+                fontWeight: 600,
+                transition: 'border-color 0.2s, box-shadow 0.2s',
+              }}
+              onFocus={(e) => { e.target.style.borderColor = '#c084fc'; e.target.style.boxShadow = '0 0 0 3px rgba(192,132,252,0.2)'; }}
+              onBlur={(e) => { e.target.style.borderColor = '#f3d6ff'; e.target.style.boxShadow = 'none'; }}
+            />
           </div>
-        )}
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          style={{ height: '2.875rem', background: isLoading ? '#91caff' : 'linear-gradient(135deg, #1677ff, #4096ff)', border: 'none', borderRadius: '0.75rem', color: '#fff', fontSize: '1rem', fontWeight: 600, cursor: isLoading ? 'not-allowed' : 'pointer', marginTop: '0.5rem', transition: 'all 0.2s' }}
-        >
-          {isLoading ? '登录中...' : '登录'}
-        </button>
-      </form>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.875rem', color: '#9b4dca', marginBottom: '0.4rem', fontWeight: 700 }}>
+              🔑 密码
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="输入密码~"
+              style={{
+                width: '100%',
+                height: '3rem',
+                padding: '0 1rem',
+                border: '2px solid #f3d6ff',
+                borderRadius: '1rem',
+                fontSize: '0.9375rem',
+                outline: 'none',
+                background: '#fdf4ff',
+                color: '#5b21b6',
+                fontWeight: 600,
+                transition: 'border-color 0.2s, box-shadow 0.2s',
+              }}
+              onFocus={(e) => { e.target.style.borderColor = '#c084fc'; e.target.style.boxShadow = '0 0 0 3px rgba(192,132,252,0.2)'; }}
+              onBlur={(e) => { e.target.style.borderColor = '#f3d6ff'; e.target.style.boxShadow = 'none'; }}
+            />
+          </div>
 
-      <p style={{ textAlign: 'center', marginTop: '1.5rem', color: '#8c8c8c', fontSize: '0.875rem' }}>
+          {error && (
+            <div
+              style={{
+                background: '#fff0f6',
+                border: '2px solid #ffc8e0',
+                borderRadius: '0.875rem',
+                padding: '0.625rem 1rem',
+                color: '#d4608a',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+              }}
+            >
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            style={{
+              height: '3.125rem',
+              background: isLoading
+                ? '#e9d5ff'
+                : 'linear-gradient(135deg, #e879f9, #a855f7)',
+              border: 'none',
+              borderRadius: '1.25rem',
+              color: '#fff',
+              fontSize: '1rem',
+              fontWeight: 800,
+              cursor: isLoading ? 'not-allowed' : 'pointer',
+              marginTop: '0.25rem',
+              boxShadow: isLoading ? 'none' : '0 4px 16px rgba(168, 85, 247, 0.4)',
+              transition: 'all 0.2s',
+              letterSpacing: '0.05em',
+            }}
+          >
+            {isLoading ? '登录中 🌀' : '登录 🚀'}
+          </button>
+        </form>
+      </div>
+
+      <p style={{ textAlign: 'center', marginTop: '1.5rem', color: '#c084fc', fontSize: '0.875rem', fontWeight: 600 }}>
         还没有账号？{' '}
-        <Link to="/register" style={{ color: '#1677ff', fontWeight: 500, textDecoration: 'none' }}>
-          立即注册
+        <Link to="/register" style={{ color: '#9b4dca', fontWeight: 800, textDecoration: 'none' }}>
+          立即注册 ✨
         </Link>
       </p>
     </div>

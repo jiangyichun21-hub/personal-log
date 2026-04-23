@@ -5,10 +5,10 @@ import { storageService } from '@/services/storage';
 import { AppHeader } from '@/components/AppHeader';
 import type { JournalVisibility } from '@/types';
 
-const VISIBILITY_OPTIONS: { value: JournalVisibility; label: string; desc: string }[] = [
-  { value: 'private', label: '私密', desc: '仅自己可见' },
-  { value: 'friends', label: '好友可见', desc: '好友可以查看' },
-  { value: 'public', label: '公开', desc: '所有人可见' },
+const VISIBILITY_OPTIONS: { value: JournalVisibility; label: string; emoji: string; desc: string }[] = [
+  { value: 'private', label: '私密', emoji: '🔒', desc: '仅自己可见' },
+  { value: 'friends', label: '好友可见', emoji: '🌸', desc: '好友可以查看' },
+  { value: 'public', label: '公开', emoji: '🌈', desc: '所有人可见' },
 ];
 
 export const JournalFormPage = () => {
@@ -63,20 +63,30 @@ export const JournalFormPage = () => {
     }
   };
 
-  const selectedVisibility = VISIBILITY_OPTIONS.find((o) => o.value === visibility)!;
+  const selectedOption = VISIBILITY_OPTIONS.find((o) => o.value === visibility)!;
 
   return (
     <div className="page-container" style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <AppHeader
-        title={isEdit ? '编辑日记' : '新建日记'}
+        title={isEdit ? '✏️ 编辑日记' : '📝 新建日记'}
         showBack
         rightAction={
           <button
             onClick={handleSave}
             disabled={isSaving}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1677ff', fontSize: '0.9375rem', fontWeight: 600, padding: '0.25rem' }}
+            style={{
+              background: isSaving ? '#e9d5ff' : 'linear-gradient(135deg, #e879f9, #a855f7)',
+              border: 'none',
+              borderRadius: '1rem',
+              padding: '0.3rem 0.875rem',
+              color: '#fff',
+              fontSize: '0.875rem',
+              fontWeight: 800,
+              cursor: isSaving ? 'not-allowed' : 'pointer',
+              boxShadow: isSaving ? 'none' : '0 2px 8px rgba(168,85,247,0.35)',
+            }}
           >
-            {isSaving ? '保存中' : '保存'}
+            {isSaving ? '保存中' : '保存 ✨'}
           </button>
         }
       />
@@ -85,56 +95,110 @@ export const JournalFormPage = () => {
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="标题（可选）"
+          placeholder="✍️ 给今天起个标题吧~"
           maxLength={50}
-          style={{ padding: '1rem', fontSize: '1.125rem', fontWeight: 600, border: 'none', borderBottom: '1px solid #f0f0f0', outline: 'none', background: '#fff', color: '#1a1a1a' }}
+          style={{
+            padding: '1rem 1.125rem',
+            fontSize: '1.125rem',
+            fontWeight: 800,
+            border: 'none',
+            borderBottom: '2px solid #f3d6ff',
+            outline: 'none',
+            background: '#fdf4ff',
+            color: '#5b21b6',
+          }}
         />
 
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="今天发生了什么..."
-          style={{ flex: 1, padding: '1rem', fontSize: '0.9375rem', border: 'none', outline: 'none', resize: 'none', background: '#fff', color: '#262626', lineHeight: 1.8, fontFamily: 'inherit' }}
+          placeholder="今天发生了什么有趣的事情呢？🌸"
+          style={{
+            flex: 1,
+            padding: '1rem 1.125rem',
+            fontSize: '0.9375rem',
+            border: 'none',
+            outline: 'none',
+            resize: 'none',
+            background: '#fdf4ff',
+            color: '#4c1d95',
+            lineHeight: 1.9,
+            fontFamily: 'inherit',
+            fontWeight: 500,
+          }}
         />
       </div>
 
-      <div style={{ borderTop: '1px solid #f0f0f0', padding: '0.75rem 1rem', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          borderTop: '2px solid #f3d6ff',
+          padding: '0.75rem 1rem',
+          background: 'rgba(253,244,255,0.95)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         <button
           onClick={() => setShowVisibilityPicker(true)}
-          style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', background: '#f7f8fa', border: '1px solid #e5e6eb', borderRadius: '1.25rem', padding: '0.375rem 0.875rem', cursor: 'pointer', fontSize: '0.8125rem', color: '#595959' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.375rem',
+            background: '#fff',
+            border: '2px solid #f3d6ff',
+            borderRadius: '1.25rem',
+            padding: '0.375rem 0.875rem',
+            cursor: 'pointer',
+            fontSize: '0.8125rem',
+            color: '#9b4dca',
+            fontWeight: 700,
+          }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#8c8c8c">
-            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
-          </svg>
-          {selectedVisibility.label}
+          <span>{selectedOption.emoji}</span>
+          {selectedOption.label}
         </button>
-        <span style={{ fontSize: '0.75rem', color: '#bfbfbf' }}>{content.length} 字</span>
+        <span style={{ fontSize: '0.75rem', color: '#c084fc', fontWeight: 600 }}>{content.length} 字</span>
       </div>
 
       {showVisibilityPicker && (
         <div
-          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'flex-end', zIndex: 200 }}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(91,33,182,0.25)', display: 'flex', alignItems: 'flex-end', zIndex: 200, backdropFilter: 'blur(4px)' }}
           onClick={() => setShowVisibilityPicker(false)}
         >
           <div
-            style={{ width: '100%', maxWidth: '480px', margin: '0 auto', background: '#fff', borderRadius: '1rem 1rem 0 0', padding: '1.25rem 1rem 2rem' }}
+            style={{ width: '100%', maxWidth: '480px', margin: '0 auto', background: '#fdf4ff', borderRadius: '1.75rem 1.75rem 0 0', padding: '1.5rem 1.25rem 2.5rem', border: '2px solid #f3d6ff', borderBottom: 'none' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 style={{ fontSize: '0.9375rem', fontWeight: 600, marginBottom: '1rem', color: '#1a1a1a' }}>谁可以看到这篇日记？</h3>
+            <h3 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '1rem', color: '#5b21b6', textAlign: 'center' }}>
+              👀 谁可以看到这篇日记？
+            </h3>
             {VISIBILITY_OPTIONS.map((option) => (
               <button
                 key={option.value}
                 onClick={() => { setVisibility(option.value); setShowVisibilityPicker(false); }}
-                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.875rem 0', background: 'none', border: 'none', borderBottom: '1px solid #f5f5f5', cursor: 'pointer', textAlign: 'left' }}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.875rem',
+                  padding: '0.875rem 1rem',
+                  background: visibility === option.value ? '#f5eeff' : '#fff',
+                  border: `2px solid ${visibility === option.value ? '#c084fc' : '#f3d6ff'}`,
+                  borderRadius: '1rem',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  marginBottom: '0.625rem',
+                  transition: 'all 0.15s',
+                }}
               >
-                <div>
-                  <div style={{ fontSize: '0.9375rem', fontWeight: 500, color: '#1a1a1a', marginBottom: '0.125rem' }}>{option.label}</div>
-                  <div style={{ fontSize: '0.8125rem', color: '#8c8c8c' }}>{option.desc}</div>
+                <span style={{ fontSize: '1.5rem' }}>{option.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#5b21b6', marginBottom: '0.125rem' }}>{option.label}</div>
+                  <div style={{ fontSize: '0.8125rem', color: '#9b7ec8', fontWeight: 600 }}>{option.desc}</div>
                 </div>
                 {visibility === option.value && (
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#1677ff">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
+                  <span style={{ fontSize: '1.25rem' }}>✅</span>
                 )}
               </button>
             ))}

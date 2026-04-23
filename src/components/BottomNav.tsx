@@ -4,29 +4,20 @@ const navItems = [
   {
     path: '/journals',
     label: '日记',
-    icon: (active: boolean) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill={active ? '#1677ff' : '#8c8c8c'}>
-        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-      </svg>
-    ),
+    emoji: '📖',
+    activeEmoji: '📖',
   },
   {
     path: '/friends',
     label: '好友',
-    icon: (active: boolean) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill={active ? '#1677ff' : '#8c8c8c'}>
-        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
-      </svg>
-    ),
+    emoji: '🌸',
+    activeEmoji: '🌸',
   },
   {
     path: '/profile',
     label: '我的',
-    icon: (active: boolean) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill={active ? '#1677ff' : '#8c8c8c'}>
-        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-      </svg>
-    ),
+    emoji: '🐱',
+    activeEmoji: '🐱',
   },
 ];
 
@@ -43,8 +34,9 @@ export const BottomNav = () => {
         transform: 'translateX(-50%)',
         width: '100%',
         maxWidth: '480px',
-        background: '#ffffff',
-        borderTop: '1px solid #f0f0f0',
+        background: 'rgba(253, 244, 255, 0.96)',
+        backdropFilter: 'blur(16px)',
+        borderTop: '2px solid #f3d6ff',
         display: 'flex',
         zIndex: 100,
         paddingBottom: 'env(safe-area-inset-bottom)',
@@ -66,15 +58,33 @@ export const BottomNav = () => {
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              gap: '0.2rem',
+              gap: '0.15rem',
+              position: 'relative',
             }}
           >
-            {item.icon(isActive)}
+            {isActive && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '0.3rem',
+                  width: '2.5rem',
+                  height: '2.5rem',
+                  background: 'linear-gradient(135deg, #f3d6ff, #e0b8ff)',
+                  borderRadius: '50%',
+                  zIndex: 0,
+                }}
+              />
+            )}
+            <span style={{ fontSize: '1.375rem', position: 'relative', zIndex: 1 }}>
+              {item.emoji}
+            </span>
             <span
               style={{
                 fontSize: '0.625rem',
-                color: isActive ? '#1677ff' : '#8c8c8c',
-                fontWeight: isActive ? 600 : 400,
+                color: isActive ? '#9b4dca' : '#c9a0dc',
+                fontWeight: isActive ? 800 : 500,
+                position: 'relative',
+                zIndex: 1,
               }}
             >
               {item.label}
