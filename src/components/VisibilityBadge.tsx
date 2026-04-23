@@ -1,9 +1,9 @@
 import type { JournalVisibility } from '@/types';
 
-const VISIBILITY_CONFIG: Record<JournalVisibility, { label: string; emoji: string; color: string; bg: string; border: string }> = {
-  private: { label: '私密', emoji: '🔒', color: '#9b7ec8', bg: '#f5eeff', border: '#e0c8ff' },
-  friends: { label: '好友', emoji: '🌸', color: '#d4608a', bg: '#fff0f6', border: '#ffc8e0' },
-  public: { label: '公开', emoji: '🌈', color: '#5b9bd5', bg: '#eef6ff', border: '#c0dcff' },
+const VISIBILITY_CONFIG: Record<JournalVisibility, { label: string; color: string; bg: string; border: string }> = {
+  private: { label: '私密', color: '#7c5cbf', bg: '#f0ebff', border: '#d8c8ff' },
+  friends: { label: '好友可见', color: '#be4b8a', bg: '#fce7f3', border: '#f9a8d4' },
+  public: { label: '公开', color: '#0369a1', bg: '#e0f2fe', border: '#7dd3fc' },
 };
 
 interface VisibilityBadgeProps {
@@ -17,17 +17,17 @@ export const VisibilityBadge = ({ visibility }: VisibilityBadgeProps) => {
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '0.2rem',
-        padding: '0.15rem 0.6rem',
-        borderRadius: '1rem',
-        fontSize: '0.7rem',
+        gap: '0.25rem',
+        padding: '0.2rem 0.625rem',
+        borderRadius: '6px',
+        fontSize: '0.6875rem',
         fontWeight: 700,
         color: config.color,
         background: config.bg,
-        border: `1.5px solid ${config.border}`,
+        border: `1px solid ${config.border}`,
+        letterSpacing: '0.02em',
       }}
     >
-      <span style={{ fontSize: '0.75rem' }}>{config.emoji}</span>
       {config.label}
     </span>
   );

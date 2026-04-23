@@ -1,24 +1,9 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const navItems = [
-  {
-    path: '/journals',
-    label: '日记',
-    emoji: '📖',
-    activeEmoji: '📖',
-  },
-  {
-    path: '/friends',
-    label: '好友',
-    emoji: '🌸',
-    activeEmoji: '🌸',
-  },
-  {
-    path: '/profile',
-    label: '我的',
-    emoji: '🐱',
-    activeEmoji: '🐱',
-  },
+  { path: '/journals', label: '日记', icon: '✦' },
+  { path: '/friends', label: '好友', icon: '◈' },
+  { path: '/profile', label: '我的', icon: '◉' },
 ];
 
 export const BottomNav = () => {
@@ -34,9 +19,10 @@ export const BottomNav = () => {
         transform: 'translateX(-50%)',
         width: '100%',
         maxWidth: '480px',
-        background: 'rgba(253, 244, 255, 0.96)',
-        backdropFilter: 'blur(16px)',
-        borderTop: '2px solid #f3d6ff',
+        background: 'rgba(250, 247, 255, 0.96)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderTop: '1px solid var(--color-border)',
         display: 'flex',
         zIndex: 100,
         paddingBottom: 'env(safe-area-inset-bottom)',
@@ -54,11 +40,11 @@ export const BottomNav = () => {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '0.5rem 0',
+              padding: '0.625rem 0 0.5rem',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              gap: '0.15rem',
+              gap: '0.2rem',
               position: 'relative',
             }}
           >
@@ -66,25 +52,35 @@ export const BottomNav = () => {
               <div
                 style={{
                   position: 'absolute',
-                  top: '0.3rem',
-                  width: '2.5rem',
-                  height: '2.5rem',
-                  background: 'linear-gradient(135deg, #f3d6ff, #e0b8ff)',
+                  top: '0.5rem',
+                  width: '2.25rem',
+                  height: '2.25rem',
+                  background: 'var(--color-primary-pale)',
                   borderRadius: '50%',
                   zIndex: 0,
                 }}
               />
             )}
-            <span style={{ fontSize: '1.375rem', position: 'relative', zIndex: 1 }}>
-              {item.emoji}
+            <span
+              style={{
+                fontSize: '1.25rem',
+                position: 'relative',
+                zIndex: 1,
+                color: isActive ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                transition: 'color 0.2s',
+              }}
+            >
+              {item.icon}
             </span>
             <span
               style={{
                 fontSize: '0.625rem',
-                color: isActive ? '#9b4dca' : '#c9a0dc',
-                fontWeight: isActive ? 800 : 500,
+                color: isActive ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                fontWeight: isActive ? 800 : 600,
                 position: 'relative',
                 zIndex: 1,
+                letterSpacing: '0.02em',
+                transition: 'color 0.2s',
               }}
             >
               {item.label}

@@ -25,21 +25,23 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        background: 'rgba(253, 244, 255, 0.92)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: '2px solid #f3d6ff',
+        background: 'rgba(250, 247, 255, 0.94)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid var(--color-border)',
         display: 'flex',
         alignItems: 'center',
         height: '3.25rem',
         padding: '0 1rem',
+        gap: '0.5rem',
       }}
     >
-      {showBack && (
+      {showBack ? (
         <button
           onClick={handleBack}
           style={{
-            background: 'linear-gradient(135deg, #f3d6ff, #e8c8ff)',
-            border: 'none',
+            background: 'var(--color-surface-2)',
+            border: '1px solid var(--color-border)',
             cursor: 'pointer',
             width: '2rem',
             height: '2rem',
@@ -47,14 +49,16 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#b06fd8',
-            fontSize: '1.1rem',
+            color: 'var(--color-primary)',
+            fontSize: '1.125rem',
             fontWeight: 700,
             flexShrink: 0,
           }}
         >
           ‹
         </button>
+      ) : (
+        <div style={{ width: '2rem', flexShrink: 0 }} />
       )}
       <h1
         style={{
@@ -62,13 +66,13 @@ export const AppHeader = ({ title, showBack = false, rightAction, onBack }: AppH
           textAlign: 'center',
           fontSize: '1rem',
           fontWeight: 800,
-          color: '#9b4dca',
-          letterSpacing: '0.02em',
+          color: 'var(--color-primary)',
+          letterSpacing: '0.01em',
         }}
       >
         {title}
       </h1>
-      <div style={{ minWidth: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+      <div style={{ minWidth: '2rem', display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
         {rightAction}
       </div>
     </header>

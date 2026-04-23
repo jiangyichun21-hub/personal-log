@@ -25,9 +25,32 @@ export const JournalDetailPage = () => {
     return (
       <div className="page-container">
         <AppHeader title="日记详情" showBack />
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', gap: '1rem' }}>
-          <span style={{ fontSize: '3rem' }}>🔍</span>
-          <p style={{ color: '#c084fc', fontWeight: 600 }}>日记不存在</p>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '60vh',
+            gap: '0.875rem',
+          }}
+        >
+          <div
+            style={{
+              width: '3.5rem',
+              height: '3.5rem',
+              background: 'var(--color-surface-2)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="#b09fd8" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <p style={{ color: 'var(--color-text-muted)', fontWeight: 600, fontSize: '0.9rem' }}>日记不存在</p>
         </div>
       </div>
     );
@@ -43,7 +66,7 @@ export const JournalDetailPage = () => {
   return (
     <div className="page-container">
       <AppHeader
-        title="📖 日记详情"
+        title="日记详情"
         showBack
         rightAction={
           isOwner ? (
@@ -51,11 +74,11 @@ export const JournalDetailPage = () => {
               <button
                 onClick={() => navigate(`/journal/${journal.id}/edit`)}
                 style={{
-                  background: 'linear-gradient(135deg, #e0b8ff, #c084fc)',
-                  border: 'none',
-                  borderRadius: '1rem',
-                  padding: '0.25rem 0.75rem',
-                  color: '#fff',
+                  background: 'var(--color-surface-2)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '0.3rem 0.75rem',
+                  color: 'var(--color-primary)',
                   fontSize: '0.8125rem',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -66,11 +89,11 @@ export const JournalDetailPage = () => {
               <button
                 onClick={() => setShowDeleteConfirm(true)}
                 style={{
-                  background: 'linear-gradient(135deg, #ffc8e0, #f472b6)',
-                  border: 'none',
-                  borderRadius: '1rem',
-                  padding: '0.25rem 0.75rem',
-                  color: '#fff',
+                  background: '#fef2f2',
+                  border: '1px solid #fecaca',
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '0.3rem 0.75rem',
+                  color: '#dc2626',
                   fontSize: '0.8125rem',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -83,17 +106,35 @@ export const JournalDetailPage = () => {
         }
       />
 
-      <div style={{ padding: '1.25rem 1rem 3rem' }}>
-        <div style={{ marginBottom: '0.875rem' }}>
+      <div style={{ padding: '1.25rem 1rem 4rem' }}>
+        <div style={{ marginBottom: '0.75rem' }}>
           <VisibilityBadge visibility={journal.visibility} />
         </div>
 
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#5b21b6', marginBottom: '0.625rem', lineHeight: 1.4 }}>
+        <h1
+          style={{
+            fontSize: '1.5rem',
+            fontWeight: 900,
+            color: 'var(--color-text-primary)',
+            marginBottom: '0.5rem',
+            lineHeight: 1.35,
+            letterSpacing: '-0.01em',
+          }}
+        >
           {journal.title || '无标题'}
         </h1>
 
-        <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', color: '#c084fc', fontSize: '0.8125rem', fontWeight: 600 }}>
-          <span>🕐 {dayjs(journal.createdAt).format('YYYY年MM月DD日 HH:mm')}</span>
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.75rem',
+            marginBottom: '1.5rem',
+            color: 'var(--color-text-placeholder)',
+            fontSize: '0.8125rem',
+            fontWeight: 600,
+          }}
+        >
+          <span>{dayjs(journal.createdAt).format('YYYY年MM月DD日 HH:mm')}</span>
           {journal.updatedAt !== journal.createdAt && (
             <span>· 编辑于 {dayjs(journal.updatedAt).format('MM月DD日')}</span>
           )}
@@ -101,13 +142,13 @@ export const JournalDetailPage = () => {
 
         <div
           style={{
-            background: '#fff',
-            borderRadius: '1.25rem',
+            background: 'var(--color-surface)',
+            borderRadius: 'var(--radius-xl)',
             padding: '1.25rem',
-            border: '2px solid #f3d6ff',
-            boxShadow: '0 2px 16px rgba(168,85,247,0.08)',
+            border: '1px solid var(--color-border)',
+            boxShadow: 'var(--shadow-sm)',
             fontSize: '1rem',
-            color: '#4c1d95',
+            color: 'var(--color-text-primary)',
             lineHeight: 1.9,
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-word',
@@ -115,36 +156,110 @@ export const JournalDetailPage = () => {
             minHeight: '8rem',
           }}
         >
-          {journal.content || <span style={{ color: '#d8b4fe' }}>暂无内容</span>}
+          {journal.content || (
+            <span style={{ color: 'var(--color-text-placeholder)' }}>暂无内容</span>
+          )}
         </div>
       </div>
 
       {showDeleteConfirm && (
         <div
-          style={{ position: 'fixed', inset: 0, background: 'rgba(91,33,182,0.3)', display: 'flex', alignItems: 'flex-end', zIndex: 200, backdropFilter: 'blur(4px)' }}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(59, 26, 110, 0.35)',
+            display: 'flex',
+            alignItems: 'flex-end',
+            zIndex: 200,
+            backdropFilter: 'blur(6px)',
+          }}
           onClick={() => setShowDeleteConfirm(false)}
         >
           <div
-            style={{ width: '100%', maxWidth: '480px', margin: '0 auto', background: '#fdf4ff', borderRadius: '1.75rem 1.75rem 0 0', padding: '1.75rem 1.25rem 2.5rem', border: '2px solid #f3d6ff', borderBottom: 'none' }}
+            style={{
+              width: '100%',
+              maxWidth: '480px',
+              margin: '0 auto',
+              background: 'var(--color-surface)',
+              borderRadius: 'var(--radius-2xl) var(--radius-2xl) 0 0',
+              padding: '1.75rem 1.25rem 2.5rem',
+              border: '1px solid var(--color-border)',
+              borderBottom: 'none',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-              <span style={{ fontSize: '2.5rem' }}>🗑️</span>
+            <div
+              style={{
+                width: '3rem',
+                height: '3rem',
+                background: '#fef2f2',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 1rem',
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
-            <h3 style={{ textAlign: 'center', fontSize: '1.0625rem', fontWeight: 800, marginBottom: '0.5rem', color: '#5b21b6' }}>确认删除</h3>
-            <p style={{ textAlign: 'center', color: '#9b7ec8', fontSize: '0.875rem', marginBottom: '1.5rem', fontWeight: 600 }}>删除后无法恢复哦，确定要删除这篇日记吗？🥺</p>
+            <h3
+              style={{
+                textAlign: 'center',
+                fontSize: '1.0625rem',
+                fontWeight: 800,
+                marginBottom: '0.5rem',
+                color: 'var(--color-text-primary)',
+              }}
+            >
+              确认删除
+            </h3>
+            <p
+              style={{
+                textAlign: 'center',
+                color: 'var(--color-text-muted)',
+                fontSize: '0.875rem',
+                marginBottom: '1.5rem',
+                fontWeight: 500,
+                lineHeight: 1.6,
+              }}
+            >
+              删除后无法恢复，确定要删除这篇日记吗？
+            </p>
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                style={{ flex: 1, height: '3rem', border: '2px solid #f3d6ff', borderRadius: '1.25rem', background: '#fff', fontSize: '1rem', cursor: 'pointer', color: '#9b7ec8', fontWeight: 700 }}
+                style={{
+                  flex: 1,
+                  height: '3rem',
+                  border: '1.5px solid var(--color-border)',
+                  borderRadius: 'var(--radius-md)',
+                  background: 'var(--color-surface)',
+                  fontSize: '0.9375rem',
+                  cursor: 'pointer',
+                  color: 'var(--color-text-secondary)',
+                  fontWeight: 700,
+                }}
               >
                 取消
               </button>
               <button
                 onClick={handleDelete}
-                style={{ flex: 1, height: '3rem', border: 'none', borderRadius: '1.25rem', background: 'linear-gradient(135deg, #f472b6, #ec4899)', fontSize: '1rem', cursor: 'pointer', color: '#fff', fontWeight: 800, boxShadow: '0 4px 12px rgba(244,114,182,0.4)' }}
+                style={{
+                  flex: 1,
+                  height: '3rem',
+                  border: 'none',
+                  borderRadius: 'var(--radius-md)',
+                  background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                  fontSize: '0.9375rem',
+                  cursor: 'pointer',
+                  color: '#fff',
+                  fontWeight: 800,
+                  boxShadow: '0 4px 12px rgba(220, 38, 38, 0.35)',
+                }}
               >
-                删除 💔
+                删除
               </button>
             </div>
           </div>
