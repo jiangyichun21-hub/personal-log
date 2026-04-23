@@ -1,8 +1,9 @@
-import type { User, Journal } from '@/types';
+import type { User, Journal, FriendRequest } from '@/types';
 
 const USERS_KEY = 'journal_users';
 const JOURNALS_KEY = 'journal_entries';
 const CURRENT_USER_KEY = 'journal_current_user';
+const FRIEND_REQUESTS_KEY = 'journal_friend_requests';
 
 export const storageService = {
   getUsers(): User[] {
@@ -66,6 +67,46 @@ export const storageService = {
   deleteJournal(id: string): void {
     const journals = this.getJournals().filter((j) => j.id !== id);
     this.saveJournals(journals);
+  },
+
+  getFriendRequests(): FriendRequest[] {
+    const raw = localStorage.getItem(FRIEND_REQUESTS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  },
+
+  saveFriendRequests(requests: FriendRequest[]): void {
+    localStorage.setItem(FRIEND_REQUESTS_KEY, JSON.stringify(requests));
+  },
+
+  getFriendRequestsBetween(fromUserId: string, toUserId: string): FriendRequest | null {
+    return this.getFriendRequests().find(
+      (r) => r.fromUserId === fromUserId && r.toUserId === toUserId && r.status === 'pending'
+    ) ?? null;
+  },
+
+  getPendingRequestsForUser(userId: string): FriendRequest[] {
+    return this.getFriendRequests().filter(
+      (r) => r.toUserId === userId && r.status === 'pending'
+    );
+  },
+
+  getSentPendingRequests(userId: string): FriendRequest[] {
+    return this.getFriendRequests().filter(
+      (r) => r.fromUserId === userId && r.status === 'pending'
+    );
+  },
+
+  createFriendRequest(request: FriendRequest): void {
+    const requests = this.getFriendRequests();
+    requests.push(request);
+    this.saveFriendRequests(requests);
+  },
+
+  updateFriendRequest(id: string, status: 'accepted' | 'rejected'): void {
+    const requests = this.getFriendRequests().map((r) =>
+      r.id === id ? { ...r, status } : r
+    );
+    this.saveFriendRequests(requests);
   },
 
   getCurrentUserId(): string | null {

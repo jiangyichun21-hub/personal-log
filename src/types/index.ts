@@ -1,5 +1,13 @@
 export type JournalVisibility = 'private' | 'friends' | 'public';
 
+export interface FriendRequest {
+  id: string;
+  fromUserId: string;
+  toUserId: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  createdAt: string;
+}
+
 export interface User {
   id: string;
   username: string;
