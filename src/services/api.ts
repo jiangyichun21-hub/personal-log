@@ -80,10 +80,10 @@ export const apiService = {
     return request<User>('/api/auth/me');
   },
 
-  async updateMe(avatar: string, bio: string): Promise<User> {
+  async updateMe(fields: { avatar?: string; bio?: string; username?: string }): Promise<User> {
     return request<User>('/api/auth/me', {
       method: 'PUT',
-      body: JSON.stringify({ avatar, bio }),
+      body: JSON.stringify(fields),
     });
   },
 

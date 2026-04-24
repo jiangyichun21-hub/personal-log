@@ -27,7 +27,7 @@ async function register(req, res) {
   }
   const existing = userDb.findByUsername(username);
   if (existing) {
-    return res.status(409).json({ error: '用户名已被占用' });
+    return res.status(409).json({ error: '该用户名已被注册，请换一个' });
   }
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = userDb.create({ username, password: hashedPassword });
@@ -59,9 +59,25 @@ function getMe(req, res) {
 }
 
 function updateMe(req, res) {
-  const { avatar, bio } = req.body;
-  const updated = userDb.update(req.userId, { avatar: avatar ?? '', bio: bio ?? '' });
-  if (!updated) return res.status(404).json({ error: '用户不存在' });
+  const { avatar, bio, username } = req.body;
+  const currentUser = userDb.findById(req.userId);
+  if (!currentUser) return res.status(404).json({ error: '用户不存在' });
+
+  if (username && username !== currentUser.username) {
+    if (username.length < 2 || username.length > 20) {
+      return res.status(400).json({ error: '用户名长度需在 2-20 个字符之间' });
+    }
+    const existing = userDb.findByUsername(username);
+    if (existing && existing.id !== req.userId) {
+      return res.status(409).json({ error: '该用户名已被占用，请换一个' });
+    }
+  }
+
+  const updated = userDb.update(req.userId, {
+    avatar: avatar ?? currentUser.avatar,
+    bio: bio ?? currentUser.bio,
+    username: username ?? currentUser.username,
+  });
   return res.json(formatUser(updated));
 }
 
