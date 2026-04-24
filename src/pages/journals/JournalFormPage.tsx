@@ -44,7 +44,9 @@ export const JournalFormPage = () => {
   const handleSave = async () => {
     const lines = editorText.split('\n');
     const title = lines[0].trim();
-    const content = lines.slice(1).join('\n').trim();
+    // 后端要求 content 不能为空，若正文为空则用标题兜底
+    const bodyContent = lines.slice(1).join('\n').trim();
+    const content = bodyContent || title;
 
     setIsSaving(true);
     try {
