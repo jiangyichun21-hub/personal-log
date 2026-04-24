@@ -22,8 +22,8 @@ export const JournalFormPage = () => {
   const navigate = useNavigate();
   const isEdit = !!id;
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  // 统一编辑区文本，第一行为标题，其余为正文
+  const [editorText, setEditorText] = useState('');
   const [visibility, setVisibility] = useState<JournalVisibility>('private');
   const [showVisibilityPicker, setShowVisibilityPicker] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -31,14 +31,21 @@ export const JournalFormPage = () => {
   useEffect(() => {
     if (isEdit && id) {
       apiService.getJournalById(id).then((journal) => {
-        setTitle(journal.title);
-        setContent(journal.content);
+        // 编辑时将标题和正文合并回一个文本块
+        const combined = journal.content
+          ? `${journal.title}\n${journal.content}`
+          : journal.title;
+        setEditorText(combined);
         setVisibility(journal.visibility);
       });
     }
   }, [id, isEdit]);
 
   const handleSave = async () => {
+    const lines = editorText.split('\n');
+    const title = lines[0].trim();
+    const content = lines.slice(1).join('\n').trim();
+
     setIsSaving(true);
     try {
       if (isEdit && id) {
@@ -55,6 +62,9 @@ export const JournalFormPage = () => {
 
   const selectedOption = VISIBILITY_OPTIONS.find((o) => o.value === visibility)!;
   const selectedColors = VISIBILITY_COLORS[visibility];
+
+  // 统计正文字数（去掉第一行标题）
+  const bodyText = editorText.split('\n').slice(1).join('\n');
 
   return (
     <div className="page-container" style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
@@ -86,31 +96,14 @@ export const JournalFormPage = () => {
       />
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="给今天起个标题..."
-          maxLength={50}
-          style={{
-            padding: '1rem 1.125rem',
-            fontSize: '1.125rem',
-            fontWeight: 800,
-            border: 'none',
-            borderBottom: '1px solid var(--color-border)',
-            outline: 'none',
-            background: 'var(--color-bg)',
-            color: 'var(--color-text-primary)',
-            letterSpacing: '-0.01em',
-          }}
-        />
-
         <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="今天发生了什么..."
+          value={editorText}
+          onChange={(e) => setEditorText(e.target.value)}
+          placeholder={'第一行作为标题\n\n今天发生了什么...'}
+          autoFocus
           style={{
             flex: 1,
-            padding: '1rem 1.125rem',
+            padding: '1.25rem 1.125rem',
             fontSize: '0.9375rem',
             border: 'none',
             outline: 'none',
@@ -165,7 +158,7 @@ export const JournalFormPage = () => {
         <span
           style={{ fontSize: '0.75rem', color: 'var(--color-text-placeholder)', fontWeight: 600 }}
         >
-          {content.length} 字
+          {bodyText.length} 字
         </span>
       </div>
 
