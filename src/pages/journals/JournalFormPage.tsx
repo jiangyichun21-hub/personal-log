@@ -66,7 +66,7 @@ export const JournalFormPage = () => {
         navigate(`/journal/${id}`, { replace: true });
       } else {
         await apiService.createJournal(title, content, visibility);
-        navigate('/journals', { replace: true });
+        navigate('/profile', { replace: true });
       }
     } finally {
       setIsSaving(false);
