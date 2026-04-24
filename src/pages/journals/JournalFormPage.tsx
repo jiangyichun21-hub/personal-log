@@ -99,7 +99,7 @@ export const JournalFormPage = () => {
         <textarea
           value={editorText}
           onChange={(e) => setEditorText(e.target.value)}
-          placeholder={'第一行作为标题\n\n今天发生了什么...'}
+          placeholder={'今天发生了什么...'}
           autoFocus
           style={{
             flex: 1,
