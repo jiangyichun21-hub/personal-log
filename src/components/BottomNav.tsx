@@ -2,18 +2,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const navItems = [
   {
-    path: '/journals',
-    label: '日记',
-    icon: (active: boolean) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path
-          d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
-          fill={active ? 'var(--color-primary)' : 'var(--color-text-muted)'}
-        />
-      </svg>
-    ),
-  },
-  {
     path: '/friends',
     label: '好友',
     icon: (active: boolean) => (
@@ -27,11 +15,11 @@ const navItems = [
   },
   {
     path: '/profile',
-    label: '我的',
+    label: '我的日记',
     icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
         <path
-          d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+          d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
           fill={active ? 'var(--color-primary)' : 'var(--color-text-muted)'}
         />
       </svg>
@@ -62,7 +50,7 @@ export const BottomNav = () => {
       }}
     >
       {navItems.map((item) => {
-        const isActive = location.pathname === item.path;
+        const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
         return (
           <button
             key={item.path}
