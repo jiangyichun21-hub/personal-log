@@ -257,16 +257,20 @@ export const ProfilePage = () => {
             </div>
           </div>
 
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0',
-            background: 'linear-gradient(145deg, #fdecd8, #fbd8b8)',
-            borderRadius: '18px',
-            padding: '0.75rem 0',
-            border: '2px solid rgba(245,220,200,0.8)',
-            boxShadow: '0 4px 12px rgba(180,100,40,0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
-          }}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0',
+              background: 'linear-gradient(145deg, #fdecd8, #fbd8b8)',
+              borderRadius: '18px',
+              padding: '0.75rem 0',
+              border: '2px solid rgba(245,220,200,0.8)',
+              boxShadow: '0 4px 12px rgba(180,100,40,0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
+              cursor: 'default',
+            }}
+          >
             {statItems.map((item, index) => (
               <div key={item.label} style={{ flex: 1, textAlign: 'center', borderRight: index < statItems.length - 1 ? '1.5px solid rgba(240,200,152,0.6)' : 'none' }}>
                 <div style={{
