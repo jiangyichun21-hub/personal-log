@@ -6,6 +6,7 @@ import { JournalListPage } from '@/pages/journals/JournalListPage';
 import { JournalDetailPage } from '@/pages/journals/JournalDetailPage';
 import { JournalFormPage } from '@/pages/journals/JournalFormPage';
 import { ProfilePage } from '@/pages/profile/ProfilePage';
+import { SettingsPage } from '@/pages/profile/SettingsPage';
 import { FriendsPage } from '@/pages/friends/FriendsPage';
 import { PrivateRoute } from '@/components/PrivateRoute';
 
@@ -62,6 +63,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <FriendsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <PrivateRoute>
+                <SettingsPage />
               </PrivateRoute>
             }
           />

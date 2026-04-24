@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { apiService } from '@/services/api';
-import { AppHeader } from '@/components/AppHeader';
 import { BottomNav } from '@/components/BottomNav';
 import { VisibilityBadge } from '@/components/VisibilityBadge';
 import type { Journal } from '@/types';
@@ -10,19 +9,23 @@ import dayjs from 'dayjs';
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
-  const { currentUser, logout, updateCurrentUser } = useAuth();
+  const { currentUser, updateCurrentUser } = useAuth();
   const [journals, setJournals] = useState<Journal[]>([]);
-  const [isEditing, setIsEditing] = useState(false);
+  const [showEditSheet, setShowEditSheet] = useState(false);
   const [editBio, setEditBio] = useState('');
   const [editUsername, setEditUsername] = useState('');
+  const [editAvatarPreview, setEditAvatarPreview] = useState('');
+  const [editAvatarBase64, setEditAvatarBase64] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (currentUser) {
       setEditBio(currentUser.bio);
       setEditUsername(currentUser.username);
+      setEditAvatarPreview(currentUser.avatar || '');
       setIsLoading(true);
       apiService
         .getMyJournals()
@@ -41,27 +44,57 @@ export const ProfilePage = () => {
   const friendsCount = journals.filter((j) => j.visibility === 'friends').length;
   const publicCount = journals.filter((j) => j.visibility === 'public').length;
 
+  const avatarUrl =
+    currentUser.avatar ||
+    `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.username}`;
+
+  const handleOpenEdit = () => {
+    setEditBio(currentUser.bio);
+    setEditUsername(currentUser.username);
+    setEditAvatarPreview(currentUser.avatar || '');
+    setEditAvatarBase64('');
+    setSaveError('');
+    setShowEditSheet(true);
+  };
+
+  const handleCloseEdit = () => {
+    setShowEditSheet(false);
+    setSaveError('');
+  };
+
+  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      setSaveError('图片大小不能超过 2MB');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const base64 = ev.target?.result as string;
+      setEditAvatarPreview(base64);
+      setEditAvatarBase64(base64);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSaveProfile = async () => {
     setSaveError('');
     setIsSaving(true);
     try {
       const updated = await apiService.updateMe({
-        avatar: currentUser.avatar,
+        avatar: editAvatarBase64 || currentUser.avatar,
         bio: editBio,
         username: editUsername,
       });
       updateCurrentUser(updated);
-      setIsEditing(false);
+      setShowEditSheet(false);
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : '保存失败');
     } finally {
       setIsSaving(false);
     }
   };
-
-  const avatarUrl =
-    currentUser.avatar ||
-    `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.username}`;
 
   const statItems = [
     { label: '日记', value: journals.length },
@@ -71,39 +104,49 @@ export const ProfilePage = () => {
   ];
 
   return (
-    <div className="page-container">
-      <AppHeader
-        title="我的日记"
-        rightAction={
-          <button
-            onClick={logout}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: 'var(--color-text-muted)',
-              fontSize: '0.8125rem',
-              fontWeight: 700,
-              padding: '0.25rem 0.25rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.25rem',
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" fill="currentColor" />
-            </svg>
-            退出
-          </button>
-        }
-      />
+    <div className="page-container" style={{ background: '#f5f5f5' }}>
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          height: '3rem',
+          padding: '0 1rem',
+          background: 'transparent',
+        }}
+      >
+        <button
+          onClick={() => navigate('/settings')}
+          style={{
+            background: 'rgba(255,255,255,0.85)',
+            border: '1px solid var(--color-border)',
+            borderRadius: '50%',
+            width: '2.25rem',
+            height: '2.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            boxShadow: '0 1px 6px rgba(0,0,0,0.08)',
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" fill="var(--color-text-muted)" />
+          </svg>
+        </button>
+      </div>
 
-      <div style={{ paddingBottom: '6rem' }}>
+      <div style={{ paddingBottom: '6rem', marginTop: '-3rem' }}>
         <div
           style={{
             background: '#fff',
-            padding: '1.25rem 1.25rem 0',
+            padding: '3.5rem 1.25rem 0',
+            cursor: 'pointer',
           }}
+          onClick={handleOpenEdit}
         >
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '0.875rem' }}>
             <div style={{ position: 'relative', flexShrink: 0 }}>
@@ -123,23 +166,36 @@ export const ProfilePage = () => {
             </div>
 
             <div style={{ flex: 1, minWidth: 0, paddingTop: '0.25rem' }}>
-              <h2 style={{
-                fontSize: '1.125rem',
-                fontWeight: 900,
-                color: 'var(--color-text-primary)',
-                marginBottom: '0.25rem',
-                letterSpacing: '-0.01em',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}>
-                {currentUser.username}
-              </h2>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                <h2 style={{
+                  fontSize: '1.125rem',
+                  fontWeight: 900,
+                  color: 'var(--color-text-primary)',
+                  letterSpacing: '-0.01em',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: '8rem',
+                }}>
+                  {currentUser.username}
+                </h2>
+                <span style={{
+                  fontSize: '0.75rem',
+                  color: 'var(--color-primary)',
+                  fontWeight: 700,
+                  background: 'var(--color-primary-pale)',
+                  borderRadius: '0.75rem',
+                  padding: '0.125rem 0.5rem',
+                  flexShrink: 0,
+                }}>
+                  编辑资料
+                </span>
+              </div>
               <p style={{
                 fontSize: '0.8125rem',
                 color: 'var(--color-text-muted)',
                 fontWeight: 500,
-                marginBottom: '0.5rem',
+                marginBottom: '0.375rem',
                 lineHeight: 1.5,
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
@@ -148,15 +204,11 @@ export const ProfilePage = () => {
               }}>
                 {currentUser.bio || (
                   <span style={{ color: 'var(--color-text-placeholder)', fontStyle: 'italic' }}>
-                    还没有个人简介
+                    点击添加个人简介
                   </span>
                 )}
               </p>
-              <span style={{
-                fontSize: '0.6875rem',
-                color: 'var(--color-text-muted)',
-                fontWeight: 500,
-              }}>
+              <span style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
                 注册于 {dayjs(currentUser.createdAt).format('YYYY年MM月')}
               </span>
             </div>
@@ -166,7 +218,7 @@ export const ProfilePage = () => {
             display: 'flex',
             alignItems: 'center',
             gap: '2rem',
-            marginBottom: '1rem',
+            paddingBottom: '1rem',
             paddingLeft: '0.25rem',
           }}>
             {statItems.map((item) => (
@@ -190,127 +242,16 @@ export const ProfilePage = () => {
                 </div>
               </div>
             ))}
-
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-              {!isEditing && (
-                <button
-                  onClick={() => { setIsEditing(true); setSaveError(''); }}
-                  style={{
-                    background: '#fff',
-                    border: '1.5px solid var(--color-border)',
-                    borderRadius: '1.5rem',
-                    padding: '0.375rem 1.25rem',
-                    fontSize: '0.8125rem',
-                    cursor: 'pointer',
-                    color: 'var(--color-text-primary)',
-                    fontWeight: 700,
-                    letterSpacing: '0.02em',
-                  }}
-                >
-                  编辑资料
-                </button>
-              )}
-            </div>
           </div>
-
-          {isEditing && (
-            <div style={{
-              background: 'var(--color-surface)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '1rem',
-              marginBottom: '1rem',
-              border: '1px solid var(--color-border)',
-            }}>
-              <div style={{ marginBottom: '0.625rem' }}>
-                <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 700, marginBottom: '0.375rem' }}>
-                  用户名
-                </label>
-                <input
-                  value={editUsername}
-                  onChange={(e) => setEditUsername(e.target.value)}
-                  placeholder="用户名（2-20字符）"
-                  maxLength={20}
-                  style={{
-                    width: '100%',
-                    padding: '0.625rem 0.75rem',
-                    border: '1.5px solid var(--color-primary)',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '0.875rem',
-                    outline: 'none',
-                    background: '#fff',
-                    color: 'var(--color-text-primary)',
-                    fontWeight: 600,
-                    boxSizing: 'border-box',
-                  }}
-                />
-              </div>
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 700, marginBottom: '0.375rem' }}>
-                  个人简介
-                </label>
-                <textarea
-                  value={editBio}
-                  onChange={(e) => setEditBio(e.target.value)}
-                  placeholder="写点什么介绍自己吧..."
-                  maxLength={100}
-                  style={{
-                    width: '100%',
-                    padding: '0.625rem 0.75rem',
-                    border: '1.5px solid var(--color-primary)',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '0.875rem',
-                    outline: 'none',
-                    resize: 'none',
-                    height: '3.5rem',
-                    fontFamily: 'inherit',
-                    background: '#fff',
-                    color: 'var(--color-text-primary)',
-                    fontWeight: 500,
-                    boxSizing: 'border-box',
-                  }}
-                />
-              </div>
-              {saveError && (
-                <div style={{ marginBottom: '0.625rem', padding: '0.5rem 0.75rem', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 'var(--radius-sm)', color: '#dc2626', fontSize: '0.8125rem', fontWeight: 600 }}>
-                  {saveError}
-                </div>
-              )}
-              <div style={{ display: 'flex', gap: '0.625rem' }}>
-                <button
-                  onClick={() => { setIsEditing(false); setSaveError(''); setEditUsername(currentUser.username); setEditBio(currentUser.bio); }}
-                  style={{ flex: 1, height: '2.5rem', border: '1.5px solid var(--color-border)', borderRadius: 'var(--radius-md)', background: '#fff', fontSize: '0.875rem', cursor: 'pointer', color: 'var(--color-text-secondary)', fontWeight: 700 }}
-                >
-                  取消
-                </button>
-                <button
-                  onClick={handleSaveProfile}
-                  disabled={isSaving}
-                  style={{
-                    flex: 1,
-                    height: '2.5rem',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    background: isSaving ? 'var(--color-primary-pale)' : 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
-                    fontSize: '0.875rem',
-                    cursor: isSaving ? 'not-allowed' : 'pointer',
-                    color: isSaving ? 'var(--color-text-muted)' : '#fff',
-                    fontWeight: 800,
-                    boxShadow: isSaving ? 'none' : 'var(--shadow-btn)',
-                  }}
-                >
-                  {isSaving ? '保存中...' : '保存'}
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         <div
           style={{
             borderTop: '1px solid var(--color-border)',
             borderBottom: '1px solid var(--color-border)',
-            background: 'var(--color-surface)',
+            background: '#fff',
             padding: '0.75rem 1.25rem 0.5rem',
+            marginTop: '0.75rem',
           }}
         >
           <span style={{
@@ -345,7 +286,7 @@ export const ProfilePage = () => {
             {journals.map((journal) => (
               <div
                 key={journal.id}
-                onClick={() => navigate(`/journal/${journal.id}`)}
+                onClick={(e) => { e.stopPropagation(); navigate(`/journal/${journal.id}`); }}
                 style={{
                   background: '#fff',
                   borderRadius: 'var(--radius-lg)',
@@ -409,6 +350,186 @@ export const ProfilePage = () => {
       </button>
 
       <BottomNav />
+
+      {showEditSheet && (
+        <>
+          <div
+            onClick={handleCloseEdit}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.45)',
+              zIndex: 200,
+              backdropFilter: 'blur(2px)',
+            }}
+          />
+          <div
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '100%',
+              maxWidth: '480px',
+              background: '#fff',
+              borderRadius: '1.25rem 1.25rem 0 0',
+              zIndex: 201,
+              padding: '0 1.25rem 2rem',
+              boxShadow: '0 -8px 40px rgba(0,0,0,0.18)',
+              maxHeight: '85vh',
+              overflowY: 'auto',
+            }}
+          >
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              padding: '0.75rem 0 0.5rem',
+            }}>
+              <div style={{ width: '2.5rem', height: '0.25rem', background: 'var(--color-border)', borderRadius: '2px' }} />
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+              <button
+                onClick={handleCloseEdit}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 600, padding: '0.25rem 0' }}
+              >
+                取消
+              </button>
+              <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>编辑资料</span>
+              <button
+                onClick={handleSaveProfile}
+                disabled={isSaving}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: isSaving ? 'not-allowed' : 'pointer',
+                  fontSize: '0.9375rem',
+                  color: isSaving ? 'var(--color-text-muted)' : 'var(--color-primary)',
+                  fontWeight: 800,
+                  padding: '0.25rem 0',
+                }}
+              >
+                {isSaving ? '保存中' : '保存'}
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.75rem' }}>
+              <div
+                style={{ position: 'relative', cursor: 'pointer' }}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <img
+                  src={editAvatarPreview || `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.username}`}
+                  alt="头像"
+                  style={{
+                    width: '5.5rem',
+                    height: '5.5rem',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: '2px solid var(--color-border)',
+                    display: 'block',
+                  }}
+                />
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  width: '1.75rem',
+                  height: '1.75rem',
+                  background: 'var(--color-primary)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '2px solid #fff',
+                  boxShadow: '0 2px 8px rgba(240,112,64,0.4)',
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z" fill="#fff" />
+                    <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" fill="#fff" />
+                  </svg>
+                </div>
+              </div>
+              <span style={{ marginTop: '0.5rem', fontSize: '0.8125rem', color: 'var(--color-primary)', fontWeight: 600 }}>
+                点击更换头像
+              </span>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={handleAvatarFileChange}
+              />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                borderBottom: '1px solid var(--color-border)',
+                paddingBottom: '0.875rem',
+              }}>
+                <label style={{ width: '4.5rem', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 600, flexShrink: 0 }}>
+                  昵称
+                </label>
+                <input
+                  value={editUsername}
+                  onChange={(e) => setEditUsername(e.target.value)}
+                  placeholder="请输入昵称（2-20字符）"
+                  maxLength={20}
+                  style={{
+                    flex: 1,
+                    border: 'none',
+                    outline: 'none',
+                    fontSize: '0.9375rem',
+                    color: 'var(--color-text-primary)',
+                    fontWeight: 600,
+                    background: 'transparent',
+                    textAlign: 'right',
+                  }}
+                />
+              </div>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                borderBottom: '1px solid var(--color-border)',
+                paddingBottom: '0.875rem',
+              }}>
+                <label style={{ width: '4.5rem', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 600, flexShrink: 0, paddingTop: '0.125rem' }}>
+                  简介
+                </label>
+                <textarea
+                  value={editBio}
+                  onChange={(e) => setEditBio(e.target.value)}
+                  placeholder="介绍一下自己吧..."
+                  maxLength={100}
+                  style={{
+                    flex: 1,
+                    border: 'none',
+                    outline: 'none',
+                    fontSize: '0.9375rem',
+                    color: 'var(--color-text-primary)',
+                    fontWeight: 500,
+                    background: 'transparent',
+                    resize: 'none',
+                    height: '4rem',
+                    fontFamily: 'inherit',
+                    textAlign: 'right',
+                    lineHeight: 1.6,
+                  }}
+                />
+              </div>
+            </div>
+
+            {saveError && (
+              <div style={{ marginTop: '1rem', padding: '0.625rem 0.875rem', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 'var(--radius-sm)', color: '#dc2626', fontSize: '0.8125rem', fontWeight: 600 }}>
+                {saveError}
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };
