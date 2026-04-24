@@ -64,10 +64,10 @@ export const ProfilePage = () => {
     `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.username}`;
 
   const statItems = [
-    { label: '全部', value: journals.length, color: 'var(--color-primary)', bg: 'var(--color-primary-pale)' },
-    { label: '私密', value: privateCount, color: '#a05020', bg: '#fdecd8' },
-    { label: '好友', value: friendsCount, color: '#c06030', bg: '#fef3e8' },
-    { label: '公开', value: publicCount, color: '#2d7a4a', bg: '#e8f5ee' },
+    { label: '日记', value: journals.length },
+    { label: '好友', value: currentUser.friendIds.length },
+    { label: '私密', value: privateCount },
+    { label: '公开', value: publicCount },
   ];
 
   return (
@@ -79,15 +79,20 @@ export const ProfilePage = () => {
             onClick={logout}
             style={{
               background: 'none',
-              border: '1.5px solid var(--color-border)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '0.25rem 0.625rem',
+              border: 'none',
               cursor: 'pointer',
               color: 'var(--color-text-muted)',
               fontSize: '0.8125rem',
               fontWeight: 700,
+              padding: '0.25rem 0.25rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.25rem',
             }}
           >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" fill="currentColor" />
+            </svg>
             退出
           </button>
         }
@@ -96,64 +101,126 @@ export const ProfilePage = () => {
       <div style={{ paddingBottom: '6rem' }}>
         <div
           style={{
-            background: 'linear-gradient(160deg, #fef3e8 0%, #fdecd8 100%)',
-            padding: '1.5rem 1.25rem',
-            position: 'relative',
-            overflow: 'hidden',
+            background: '#fff',
+            padding: '1.25rem 1.25rem 0',
           }}
         >
-          <div style={{ position: 'absolute', top: '-2rem', right: '-2rem', width: '8rem', height: '8rem', background: 'rgba(240, 112, 64, 0.08)', borderRadius: '50%' }} />
-          <div style={{ position: 'absolute', bottom: '-1rem', left: '-1rem', width: '5rem', height: '5rem', background: 'rgba(232, 149, 109, 0.06)', borderRadius: '50%' }} />
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '0.875rem' }}>
+            <div style={{ position: 'relative', flexShrink: 0 }}>
+              <img
+                src={avatarUrl}
+                alt={currentUser.username}
+                style={{
+                  width: '5rem',
+                  height: '5rem',
+                  borderRadius: '50%',
+                  border: '2px solid var(--color-border)',
+                  background: 'var(--color-surface-2)',
+                  display: 'block',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem', position: 'relative' }}>
-            <img
-              src={avatarUrl}
-              alt={currentUser.username}
-              style={{
-                width: '4rem',
-                height: '4rem',
-                borderRadius: '50%',
-                border: '3px solid #fff',
-                boxShadow: '0 4px 16px rgba(180, 100, 40, 0.2)',
-                background: 'var(--color-surface-2)',
-                flexShrink: 0,
-              }}
-            />
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--color-text-primary)', marginBottom: '0.125rem', letterSpacing: '-0.01em' }}>
+            <div style={{ flex: 1, minWidth: 0, paddingTop: '0.25rem' }}>
+              <h2 style={{
+                fontSize: '1.125rem',
+                fontWeight: 900,
+                color: 'var(--color-text-primary)',
+                marginBottom: '0.25rem',
+                letterSpacing: '-0.01em',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}>
                 {currentUser.username}
               </h2>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
-                  {currentUser.friendIds.length} 位好友
-                </span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
-                  注册于 {dayjs(currentUser.createdAt).format('YYYY年MM月')}
-                </span>
-              </div>
+              <p style={{
+                fontSize: '0.8125rem',
+                color: 'var(--color-text-muted)',
+                fontWeight: 500,
+                marginBottom: '0.5rem',
+                lineHeight: 1.5,
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}>
+                {currentUser.bio || (
+                  <span style={{ color: 'var(--color-text-placeholder)', fontStyle: 'italic' }}>
+                    还没有个人简介
+                  </span>
+                )}
+              </p>
+              <span style={{
+                fontSize: '0.6875rem',
+                color: 'var(--color-text-muted)',
+                fontWeight: 500,
+              }}>
+                注册于 {dayjs(currentUser.createdAt).format('YYYY年MM月')}
+              </span>
             </div>
-            {!isEditing && (
-              <button
-                onClick={() => { setIsEditing(true); setSaveError(''); }}
-                style={{
-                  background: 'rgba(255,255,255,0.85)',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '0.3rem 0.75rem',
-                  fontSize: '0.8125rem',
-                  cursor: 'pointer',
-                  color: 'var(--color-primary)',
-                  fontWeight: 700,
-                  flexShrink: 0,
-                }}
-              >
-                编辑
-              </button>
-            )}
           </div>
 
-          {isEditing ? (
-            <div style={{ position: 'relative' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '2rem',
+            marginBottom: '1rem',
+            paddingLeft: '0.25rem',
+          }}>
+            {statItems.map((item) => (
+              <div key={item.label} style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: '1.25rem',
+                  fontWeight: 900,
+                  color: 'var(--color-text-primary)',
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.02em',
+                }}>
+                  {item.value}
+                </div>
+                <div style={{
+                  fontSize: '0.6875rem',
+                  color: 'var(--color-text-muted)',
+                  fontWeight: 600,
+                  marginTop: '0.125rem',
+                }}>
+                  {item.label}
+                </div>
+              </div>
+            ))}
+
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+              {!isEditing && (
+                <button
+                  onClick={() => { setIsEditing(true); setSaveError(''); }}
+                  style={{
+                    background: '#fff',
+                    border: '1.5px solid var(--color-border)',
+                    borderRadius: '1.5rem',
+                    padding: '0.375rem 1.25rem',
+                    fontSize: '0.8125rem',
+                    cursor: 'pointer',
+                    color: 'var(--color-text-primary)',
+                    fontWeight: 700,
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  编辑资料
+                </button>
+              )}
+            </div>
+          </div>
+
+          {isEditing && (
+            <div style={{
+              background: 'var(--color-surface)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '1rem',
+              marginBottom: '1rem',
+              border: '1px solid var(--color-border)',
+            }}>
               <div style={{ marginBottom: '0.625rem' }}>
                 <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 700, marginBottom: '0.375rem' }}>
                   用户名
@@ -173,7 +240,7 @@ export const ProfilePage = () => {
                     background: '#fff',
                     color: 'var(--color-text-primary)',
                     fontWeight: 600,
-                    boxShadow: '0 0 0 3px rgba(240, 112, 64, 0.12)',
+                    boxSizing: 'border-box',
                   }}
                 />
               </div>
@@ -199,7 +266,7 @@ export const ProfilePage = () => {
                     background: '#fff',
                     color: 'var(--color-text-primary)',
                     fontWeight: 500,
-                    boxShadow: '0 0 0 3px rgba(240, 112, 64, 0.12)',
+                    boxSizing: 'border-box',
                   }}
                 />
               </div>
@@ -235,45 +302,25 @@ export const ProfilePage = () => {
                 </button>
               </div>
             </div>
-          ) : (
-            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', fontWeight: 500, lineHeight: 1.6, position: 'relative' }}>
-              {currentUser.bio || (
-                <span style={{ color: 'var(--color-text-placeholder)' }}>还没有个人简介，点击编辑添加</span>
-              )}
-            </p>
           )}
         </div>
 
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            background: 'var(--color-surface)',
-            borderBottom: '1px solid var(--color-border)',
             borderTop: '1px solid var(--color-border)',
+            borderBottom: '1px solid var(--color-border)',
+            background: 'var(--color-surface)',
+            padding: '0.75rem 1.25rem 0.5rem',
           }}
         >
-          {statItems.map((item, index) => (
-            <div
-              key={item.label}
-              style={{
-                padding: '0.875rem 0',
-                textAlign: 'center',
-                borderRight: index < statItems.length - 1 ? '1px solid var(--color-border)' : 'none',
-              }}
-            >
-              <div style={{ fontSize: '1.375rem', fontWeight: 900, color: item.color, marginBottom: '0.2rem', letterSpacing: '-0.02em' }}>
-                {item.value}
-              </div>
-              <div style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', fontWeight: 700, letterSpacing: '0.02em' }}>
-                {item.label}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ padding: '0.875rem 0.875rem 0.375rem' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <span style={{
+            fontSize: '0.9375rem',
+            fontWeight: 800,
+            color: 'var(--color-text-primary)',
+            borderBottom: '2.5px solid var(--color-primary)',
+            paddingBottom: '0.375rem',
+            display: 'inline-block',
+          }}>
             全部日记
           </span>
         </div>
@@ -294,13 +341,13 @@ export const ProfilePage = () => {
             </p>
           </div>
         ) : (
-          <div style={{ padding: '0 0.875rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+          <div style={{ padding: '0.75rem 0.875rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
             {journals.map((journal) => (
               <div
                 key={journal.id}
                 onClick={() => navigate(`/journal/${journal.id}`)}
                 style={{
-                  background: 'var(--color-surface)',
+                  background: '#fff',
                   borderRadius: 'var(--radius-lg)',
                   padding: '1rem 1.125rem',
                   border: '1px solid var(--color-border)',
