@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { storageService } from '@/services/storage';
+import { apiService } from '@/services/api';
 import { AppHeader } from '@/components/AppHeader';
 import { BottomNav } from '@/components/BottomNav';
 import { VisibilityBadge } from '@/components/VisibilityBadge';
@@ -13,11 +13,19 @@ export const JournalListPage = () => {
   const { currentUser } = useAuth();
   const [journals, setJournals] = useState<Journal[]>([]);
   const [searchText, setSearchText] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (currentUser) {
-      const data = storageService.getJournalsByUserId(currentUser.id);
-      setJournals(data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
+      setIsLoading(true);
+      apiService
+        .getMyJournals()
+        .then((data) =>
+          setJournals(
+            data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          )
+        )
+        .finally(() => setIsLoading(false));
     }
   }, [currentUser]);
 
@@ -35,7 +43,9 @@ export const JournalListPage = () => {
   }, {});
 
   const todayStr = dayjs().format('YYYY年MM月DD日');
-  const todayJournal = journals.find((j) => dayjs(j.createdAt).format('YYYY年MM月DD日') === todayStr);
+  const todayJournal = journals.find(
+    (j) => dayjs(j.createdAt).format('YYYY年MM月DD日') === todayStr
+  );
 
   return (
     <div className="page-container">
@@ -80,7 +90,9 @@ export const JournalListPage = () => {
           position: 'relative',
           overflow: 'hidden',
         }}
-        onClick={() => todayJournal ? navigate(`/journal/${todayJournal.id}`) : navigate('/journal/new')}
+        onClick={() =>
+          todayJournal ? navigate(`/journal/${todayJournal.id}`) : navigate('/journal/new')
+        }
       >
         {!todayJournal && (
           <div
@@ -159,13 +171,24 @@ export const JournalListPage = () => {
       <div style={{ padding: '0 0.875rem 0.625rem' }}>
         <div style={{ position: 'relative' }}>
           <svg
-            style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.45 }}
+            style={{
+              position: 'absolute',
+              left: '0.875rem',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              opacity: 0.45,
+            }}
             width="15"
             height="15"
             viewBox="0 0 24 24"
             fill="none"
           >
-            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="var(--color-primary)" strokeWidth="2.5" strokeLinecap="round"/>
+            <path
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              stroke="var(--color-primary)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
           </svg>
           <input
             value={searchText}
@@ -191,7 +214,26 @@ export const JournalListPage = () => {
       </div>
 
       <div style={{ paddingBottom: '5rem' }}>
-        {filteredJournals.length === 0 ? (
+        {isLoading ? (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              padding: '4rem 1rem',
+            }}
+          >
+            <div
+              style={{
+                width: '2rem',
+                height: '2rem',
+                border: '3px solid var(--color-primary-pale)',
+                borderTop: '3px solid var(--color-primary)',
+                borderRadius: '50%',
+                animation: 'spin 0.8s linear infinite',
+              }}
+            />
+          </div>
+        ) : filteredJournals.length === 0 ? (
           <div
             style={{
               display: 'flex',
@@ -214,10 +256,20 @@ export const JournalListPage = () => {
               }}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="var(--color-primary)"/>
+                <path
+                  d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
+                  fill="var(--color-primary)"
+                />
               </svg>
             </div>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', fontWeight: 600, textAlign: 'center' }}>
+            <p
+              style={{
+                color: 'var(--color-text-muted)',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                textAlign: 'center',
+              }}
+            >
               {searchText ? '没有找到相关日记' : '还没有日记，点击右上角开始记录'}
             </p>
           </div>
@@ -250,7 +302,14 @@ export const JournalListPage = () => {
                   {items.length}
                 </span>
               </div>
-              <div style={{ padding: '0 0.875rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+              <div
+                style={{
+                  padding: '0 0.875rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.625rem',
+                }}
+              >
                 {items.map((journal) => (
                   <div
                     key={journal.id}
@@ -326,7 +385,13 @@ export const JournalListPage = () => {
                     >
                       {journal.content || '暂无内容'}
                     </p>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        color: 'var(--color-text-muted)',
+                        fontWeight: 600,
+                      }}
+                    >
                       {dayjs(journal.createdAt).format('MM月DD日 HH:mm')}
                     </span>
                   </div>

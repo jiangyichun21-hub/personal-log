@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { storageService } from '@/services/storage';
+import { apiService } from '@/services/api';
 import { AppHeader } from '@/components/AppHeader';
 import { VisibilityBadge } from '@/components/VisibilityBadge';
 import type { Journal } from '@/types';
@@ -13,13 +13,45 @@ export const JournalDetailPage = () => {
   const { currentUser } = useAuth();
   const [journal, setJournal] = useState<Journal | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (id) {
-      const data = storageService.getJournalById(id);
-      setJournal(data);
+      setIsLoading(true);
+      apiService
+        .getJournalById(id)
+        .then((data) => setJournal(data))
+        .catch(() => setJournal(null))
+        .finally(() => setIsLoading(false));
     }
   }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="page-container">
+        <AppHeader title="日记详情" showBack />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '60vh',
+          }}
+        >
+          <div
+            style={{
+              width: '2rem',
+              height: '2rem',
+              border: '3px solid var(--color-primary-pale)',
+              borderTop: '3px solid var(--color-primary)',
+              borderRadius: '50%',
+              animation: 'spin 0.8s linear infinite',
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (!journal) {
     return (
@@ -47,10 +79,17 @@ export const JournalDetailPage = () => {
             }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round"/>
+              <path
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                stroke="var(--color-primary)"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
           </div>
-          <p style={{ color: 'var(--color-text-muted)', fontWeight: 600, fontSize: '0.9rem' }}>日记不存在</p>
+          <p style={{ color: 'var(--color-text-muted)', fontWeight: 600, fontSize: '0.9rem' }}>
+            日记不存在
+          </p>
         </div>
       </div>
     );
@@ -58,8 +97,8 @@ export const JournalDetailPage = () => {
 
   const isOwner = currentUser?.id === journal.userId;
 
-  const handleDelete = () => {
-    storageService.deleteJournal(journal.id);
+  const handleDelete = async () => {
+    await apiService.deleteJournal(journal.id);
     navigate('/journals', { replace: true });
   };
 
@@ -107,13 +146,26 @@ export const JournalDetailPage = () => {
       />
 
       <div style={{ padding: '1.25rem 1rem 4rem' }}>
-        <div style={{ marginBottom: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+        <div
+          style={{
+            marginBottom: '0.875rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.625rem',
+          }}
+        >
           <VisibilityBadge visibility={journal.visibility} />
           <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
             {dayjs(journal.createdAt).format('YYYY年MM月DD日 HH:mm')}
           </span>
           {journal.updatedAt !== journal.createdAt && (
-            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-placeholder)', fontWeight: 600 }}>
+            <span
+              style={{
+                fontSize: '0.75rem',
+                color: 'var(--color-text-placeholder)',
+                fontWeight: 600,
+              }}
+            >
               · 编辑于 {dayjs(journal.updatedAt).format('MM月DD日')}
             </span>
           )}
@@ -205,7 +257,13 @@ export const JournalDetailPage = () => {
               }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path
+                  d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"
+                  stroke="#dc2626"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </div>
             <h3

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { storageService } from '@/services/storage';
+import { apiService } from '@/services/api';
 import { AppHeader } from '@/components/AppHeader';
 import type { JournalVisibility } from '@/types';
 
@@ -11,16 +10,16 @@ const VISIBILITY_OPTIONS: { value: JournalVisibility; label: string; desc: strin
   { value: 'public', label: '公开', desc: '所有人可见' },
 ];
 
-const VISIBILITY_COLORS: Record<JournalVisibility, { color: string; bg: string; border: string }> = {
-  private: { color: '#a05020', bg: '#fdecd8', border: '#f0c898' },
-  friends: { color: '#c06030', bg: '#fef3e8', border: '#f5c8a0' },
-  public: { color: '#2d7a4a', bg: '#e8f5ee', border: '#a8d8b8' },
-};
+const VISIBILITY_COLORS: Record<JournalVisibility, { color: string; bg: string; border: string }> =
+  {
+    private: { color: '#a05020', bg: '#fdecd8', border: '#f0c898' },
+    friends: { color: '#c06030', bg: '#fef3e8', border: '#f5c8a0' },
+    public: { color: '#2d7a4a', bg: '#e8f5ee', border: '#a8d8b8' },
+  };
 
 export const JournalFormPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
   const isEdit = !!id;
 
   const [title, setTitle] = useState('');
@@ -31,37 +30,22 @@ export const JournalFormPage = () => {
 
   useEffect(() => {
     if (isEdit && id) {
-      const journal = storageService.getJournalById(id);
-      if (journal) {
+      apiService.getJournalById(id).then((journal) => {
         setTitle(journal.title);
         setContent(journal.content);
         setVisibility(journal.visibility);
-      }
+      });
     }
   }, [id, isEdit]);
 
   const handleSave = async () => {
-    if (!currentUser) return;
     setIsSaving(true);
     try {
-      const now = new Date().toISOString();
       if (isEdit && id) {
-        const existing = storageService.getJournalById(id);
-        if (existing) {
-          storageService.updateJournal({ ...existing, title, content, visibility, updatedAt: now });
-          navigate(`/journal/${id}`, { replace: true });
-        }
+        await apiService.updateJournal(id, title, content, visibility);
+        navigate(`/journal/${id}`, { replace: true });
       } else {
-        const newJournal = {
-          id: storageService.generateId(),
-          userId: currentUser.id,
-          title,
-          content,
-          visibility,
-          createdAt: now,
-          updatedAt: now,
-        };
-        storageService.createJournal(newJournal);
+        await apiService.createJournal(title, content, visibility);
         navigate('/journals', { replace: true });
       }
     } finally {
@@ -169,10 +153,18 @@ export const JournalFormPage = () => {
         >
           {selectedOption.label}
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
-            <path d="M6 9l6 6 6-6" stroke={selectedColors.color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path
+              d="M6 9l6 6 6-6"
+              stroke={selectedColors.color}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
-        <span style={{ fontSize: '0.75rem', color: 'var(--color-text-placeholder)', fontWeight: 600 }}>
+        <span
+          style={{ fontSize: '0.75rem', color: 'var(--color-text-placeholder)', fontWeight: 600 }}
+        >
           {content.length} 字
         </span>
       </div>
@@ -230,7 +222,10 @@ export const JournalFormPage = () => {
               return (
                 <button
                   key={option.value}
-                  onClick={() => { setVisibility(option.value); setShowVisibilityPicker(false); }}
+                  onClick={() => {
+                    setVisibility(option.value);
+                    setShowVisibilityPicker(false);
+                  }}
                   style={{
                     width: '100%',
                     display: 'flex',
@@ -264,16 +259,35 @@ export const JournalFormPage = () => {
                     </span>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--color-text-primary)', marginBottom: '0.125rem' }}>
+                    <div
+                      style={{
+                        fontSize: '0.9375rem',
+                        fontWeight: 800,
+                        color: 'var(--color-text-primary)',
+                        marginBottom: '0.125rem',
+                      }}
+                    >
                       {option.label}
                     </div>
-                    <div style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
+                    <div
+                      style={{
+                        fontSize: '0.8125rem',
+                        color: 'var(--color-text-muted)',
+                        fontWeight: 500,
+                      }}
+                    >
                       {option.desc}
                     </div>
                   </div>
                   {isSelected && (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                      <path d="M20 6L9 17l-5-5" stroke={colors.color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path
+                        d="M20 6L9 17l-5-5"
+                        stroke={colors.color}
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   )}
                 </button>

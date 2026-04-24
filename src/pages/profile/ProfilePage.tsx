@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { storageService } from '@/services/storage';
+import { apiService } from '@/services/api';
 import { AppHeader } from '@/components/AppHeader';
 import { BottomNav } from '@/components/BottomNav';
 import type { Journal } from '@/types';
@@ -10,14 +10,12 @@ export const ProfilePage = () => {
   const [journals, setJournals] = useState<Journal[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editBio, setEditBio] = useState('');
-  const [editUsername, setEditUsername] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
-      const data = storageService.getJournalsByUserId(currentUser.id);
-      setJournals(data);
+      apiService.getMyJournals().then((data) => setJournals(data));
       setEditBio(currentUser.bio);
-      setEditUsername(currentUser.username);
     }
   }, [currentUser]);
 
@@ -27,10 +25,15 @@ export const ProfilePage = () => {
   const friendsCount = journals.filter((j) => j.visibility === 'friends').length;
   const publicCount = journals.filter((j) => j.visibility === 'public').length;
 
-  const handleSaveProfile = () => {
-    const updated = { ...currentUser, username: editUsername, bio: editBio };
-    updateCurrentUser(updated);
-    setIsEditing(false);
+  const handleSaveProfile = async () => {
+    setIsSaving(true);
+    try {
+      const updated = await apiService.updateMe(currentUser.avatar, editBio);
+      updateCurrentUser(updated);
+      setIsEditing(false);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const statItems = [
@@ -39,6 +42,10 @@ export const ProfilePage = () => {
     { label: '好友', value: friendsCount, color: '#c06030', bg: '#fef3e8' },
     { label: '公开', value: publicCount, color: '#2d7a4a', bg: '#e8f5ee' },
   ];
+
+  const avatarUrl =
+    currentUser.avatar ||
+    `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.username}`;
 
   return (
     <div className="page-container">
@@ -95,10 +102,18 @@ export const ProfilePage = () => {
             }}
           />
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem', position: 'relative' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+              marginBottom: '1rem',
+              position: 'relative',
+            }}
+          >
             <div style={{ position: 'relative', flexShrink: 0 }}>
               <img
-                src={currentUser.avatar}
+                src={avatarUrl}
                 alt={currentUser.username}
                 style={{
                   width: '4.5rem',
@@ -123,40 +138,20 @@ export const ProfilePage = () => {
               />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              {isEditing ? (
-                <input
-                  value={editUsername}
-                  onChange={(e) => setEditUsername(e.target.value)}
-                  style={{
-                    fontSize: '1.125rem',
-                    fontWeight: 800,
-                    border: '1.5px solid var(--color-primary)',
-                    borderRadius: 'var(--radius-sm)',
-                    padding: '0.25rem 0.625rem',
-                    outline: 'none',
-                    width: '100%',
-                    marginBottom: '0.25rem',
-                    background: '#fff',
-                    color: 'var(--color-text-primary)',
-                    boxShadow: '0 0 0 3px rgba(240, 112, 64, 0.15)',
-                  }}
-                />
-              ) : (
-                <h2
-                  style={{
-                    fontSize: '1.25rem',
-                    fontWeight: 900,
-                    color: 'var(--color-text-primary)',
-                    marginBottom: '0.25rem',
-                    letterSpacing: '-0.01em',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {currentUser.username}
-                </h2>
-              )}
+              <h2
+                style={{
+                  fontSize: '1.25rem',
+                  fontWeight: 900,
+                  color: 'var(--color-text-primary)',
+                  marginBottom: '0.25rem',
+                  letterSpacing: '-0.01em',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {currentUser.username}
+              </h2>
               <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
                 日记本成员
               </p>
@@ -206,28 +201,48 @@ export const ProfilePage = () => {
                 </button>
                 <button
                   onClick={handleSaveProfile}
+                  disabled={isSaving}
                   style={{
                     flex: 1,
                     height: '2.5rem',
                     border: 'none',
                     borderRadius: 'var(--radius-md)',
-                    background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
+                    background: isSaving
+                      ? 'var(--color-primary-pale)'
+                      : 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
                     fontSize: '0.875rem',
-                    cursor: 'pointer',
-                    color: '#fff',
+                    cursor: isSaving ? 'not-allowed' : 'pointer',
+                    color: isSaving ? 'var(--color-text-muted)' : '#fff',
                     fontWeight: 800,
-                    boxShadow: 'var(--shadow-btn)',
+                    boxShadow: isSaving ? 'none' : 'var(--shadow-btn)',
                   }}
                 >
-                  保存
+                  {isSaving ? '保存中...' : '保存'}
                 </button>
               </div>
             </div>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
-              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', flex: 1, fontWeight: 500, lineHeight: 1.6 }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                position: 'relative',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '0.875rem',
+                  color: 'var(--color-text-secondary)',
+                  flex: 1,
+                  fontWeight: 500,
+                  lineHeight: 1.6,
+                }}
+              >
                 {currentUser.bio || (
-                  <span style={{ color: 'var(--color-text-placeholder)' }}>还没有个人简介，点击编辑添加</span>
+                  <span style={{ color: 'var(--color-text-placeholder)' }}>
+                    还没有个人简介，点击编辑添加
+                  </span>
                 )}
               </p>
               <button
@@ -282,7 +297,14 @@ export const ProfilePage = () => {
               >
                 {item.value}
               </div>
-              <div style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', fontWeight: 700, letterSpacing: '0.02em' }}>
+              <div
+                style={{
+                  fontSize: '0.6875rem',
+                  color: 'var(--color-text-muted)',
+                  fontWeight: 700,
+                  letterSpacing: '0.02em',
+                }}
+              >
                 {item.label}
               </div>
             </div>
@@ -306,12 +328,22 @@ export const ProfilePage = () => {
                 background: 'var(--color-surface-2)',
               }}
             >
-              <h3 style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '0.01em' }}>
+              <h3
+                style={{
+                  fontSize: '0.875rem',
+                  fontWeight: 800,
+                  color: 'var(--color-text-primary)',
+                  letterSpacing: '0.01em',
+                }}
+              >
                 账号信息
               </h3>
             </div>
             {[
-              { label: '注册时间', value: new Date(currentUser.createdAt).toLocaleDateString('zh-CN') },
+              {
+                label: '注册时间',
+                value: new Date(currentUser.createdAt).toLocaleDateString('zh-CN'),
+              },
               { label: '好友数量', value: `${currentUser.friendIds.length} 人` },
             ].map((item, index, arr) => (
               <div
@@ -324,10 +356,22 @@ export const ProfilePage = () => {
                   borderBottom: index < arr.length - 1 ? '1px solid var(--color-border)' : 'none',
                 }}
               >
-                <span style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
+                <span
+                  style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--color-text-secondary)',
+                    fontWeight: 600,
+                  }}
+                >
                   {item.label}
                 </span>
-                <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', fontWeight: 700 }}>
+                <span
+                  style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--color-text-muted)',
+                    fontWeight: 700,
+                  }}
+                >
                   {item.value}
                 </span>
               </div>
