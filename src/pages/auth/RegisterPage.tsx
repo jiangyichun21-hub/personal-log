@@ -45,7 +45,7 @@ export const RegisterPage = () => {
     setError('');
     try {
       await register(username, password);
-      navigate('/journals', { replace: true });
+      navigate('/profile', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : '注册失败');
     } finally {

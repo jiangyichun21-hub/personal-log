@@ -36,7 +36,7 @@ export const LoginPage = () => {
     setError('');
     try {
       await login(username, password);
-      navigate('/journals', { replace: true });
+      navigate('/profile', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : '登录失败');
     } finally {

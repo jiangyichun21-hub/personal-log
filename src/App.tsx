@@ -15,7 +15,7 @@ const App = () => {
     <AuthProvider>
       <HashRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/journals" replace />} />
+          <Route path="/" element={<Navigate to="/profile" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route
