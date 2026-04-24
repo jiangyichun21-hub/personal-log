@@ -117,47 +117,13 @@ export const ProfilePage = () => {
 
   return (
     <div className="page-container" style={{ background: 'linear-gradient(160deg, #fff5ec 0%, #fde8d0 30%, #f5f5f5 60%)' }}>
-      <div
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          height: '3rem',
-          padding: '0 1rem',
-          background: 'transparent',
-        }}
-      >
-        <button
-          onClick={() => navigate('/settings')}
-          style={{
-            background: 'linear-gradient(145deg, #ffffff, #fff8f2)',
-            border: '2px solid rgba(245, 220, 200, 0.8)',
-            borderRadius: '50%',
-            width: '2.375rem',
-            height: '2.375rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(180,100,40,0.15), inset 0 1px 0 rgba(255,255,255,0.9)',
-          }}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" fill="var(--color-text-muted)" />
-          </svg>
-        </button>
-      </div>
-
-      <div style={{ paddingBottom: '6rem', marginTop: '-3rem' }}>
+      <div style={{ paddingBottom: '6rem', paddingTop: '0.75rem' }}>
         <div
           style={{
             margin: '0 1rem 1rem',
             background: 'linear-gradient(145deg, #ffffff, #fff8f2)',
             borderRadius: '28px',
-            padding: '3.5rem 1.25rem 1.25rem',
+            padding: '1.25rem',
             border: '2px solid rgba(245, 220, 200, 0.7)',
             boxShadow: '0 10px 32px rgba(180,100,40,0.14), 0 4px 12px rgba(180,100,40,0.08), inset 0 2px 0 rgba(255,255,255,0.95)',
             cursor: 'pointer',
@@ -177,6 +143,30 @@ export const ProfilePage = () => {
               borderRadius: '28px 28px 0 0',
             }}
           />
+
+          <button
+            onClick={(e) => { e.stopPropagation(); navigate('/settings'); }}
+            style={{
+              position: 'absolute',
+              top: '0.875rem',
+              right: '0.875rem',
+              background: 'linear-gradient(145deg, #fdecd8, #fbd8b8)',
+              border: '2px solid rgba(245, 220, 200, 0.8)',
+              borderRadius: '50%',
+              width: '2rem',
+              height: '2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              boxShadow: '0 3px 8px rgba(180,100,40,0.15), inset 0 1px 0 rgba(255,255,255,0.9)',
+              zIndex: 1,
+            }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" fill="var(--color-primary)" />
+            </svg>
+          </button>
 
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.125rem' }}>
             <div style={{ position: 'relative', flexShrink: 0 }}>
