@@ -2,7 +2,6 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { RegisterPage } from '@/pages/auth/RegisterPage';
-import { JournalListPage } from '@/pages/journals/JournalListPage';
 import { JournalDetailPage } from '@/pages/journals/JournalDetailPage';
 import { JournalFormPage } from '@/pages/journals/JournalFormPage';
 import { ProfilePage } from '@/pages/profile/ProfilePage';
@@ -18,14 +17,6 @@ const App = () => {
           <Route path="/" element={<Navigate to="/profile" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route
-            path="/journals"
-            element={
-              <PrivateRoute>
-                <JournalListPage />
-              </PrivateRoute>
-            }
-          />
           <Route
             path="/journal/new"
             element={
