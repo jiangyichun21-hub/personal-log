@@ -2,6 +2,22 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
+const clayInputStyle: React.CSSProperties = {
+  width: '100%',
+  height: '3.25rem',
+  padding: '0 1.125rem',
+  border: '2px solid rgba(245, 220, 200, 0.9)',
+  borderRadius: '18px',
+  fontSize: '0.9375rem',
+  outline: 'none',
+  background: 'linear-gradient(145deg, #fff8f2, #ffffff)',
+  color: 'var(--color-text-primary)',
+  fontWeight: 600,
+  transition: 'all 0.2s ease',
+  boxShadow:
+    'inset 0 3px 8px rgba(180, 100, 40, 0.10), inset 0 1px 3px rgba(180, 100, 40, 0.06), 0 1px 0 rgba(255,255,255,0.9)',
+};
+
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -28,6 +44,18 @@ export const LoginPage = () => {
     }
   };
 
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.style.borderColor = 'var(--color-primary-light)';
+    e.target.style.boxShadow =
+      'inset 0 3px 8px rgba(180, 100, 40, 0.12), inset 0 1px 3px rgba(180, 100, 40, 0.08), 0 0 0 3px rgba(240, 112, 64, 0.12)';
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.style.borderColor = 'rgba(245, 220, 200, 0.9)';
+    e.target.style.boxShadow =
+      'inset 0 3px 8px rgba(180, 100, 40, 0.10), inset 0 1px 3px rgba(180, 100, 40, 0.06), 0 1px 0 rgba(255,255,255,0.9)';
+  };
+
   return (
     <div
       className="page-container"
@@ -37,30 +65,40 @@ export const LoginPage = () => {
         justifyContent: 'center',
         minHeight: '100vh',
         padding: '2rem 1.5rem',
-        background: 'linear-gradient(160deg, #fdf6ee 0%, #fce8d5 60%, #fbd5b5 100%)',
+        background: 'linear-gradient(160deg, #fff5ec 0%, #fde8d0 50%, #fcd0a8 100%)',
       }}
     >
-      <div style={{ marginBottom: '2.75rem', textAlign: 'center' }}>
+      {/* 装饰气泡 */}
+      <div style={{ position: 'absolute', top: '8%', right: '12%', width: '5rem', height: '5rem', background: 'linear-gradient(145deg, #fde8d8, #fbd0b0)', borderRadius: '50%', boxShadow: '0 8px 24px rgba(240,112,64,0.20), inset 0 2px 0 rgba(255,255,255,0.7)', opacity: 0.7 }} />
+      <div style={{ position: 'absolute', top: '18%', left: '8%', width: '3rem', height: '3rem', background: 'linear-gradient(145deg, #fef3e8, #fde0c0)', borderRadius: '50%', boxShadow: '0 6px 16px rgba(240,112,64,0.15), inset 0 2px 0 rgba(255,255,255,0.7)', opacity: 0.6 }} />
+      <div style={{ position: 'absolute', bottom: '20%', left: '6%', width: '4rem', height: '4rem', background: 'linear-gradient(145deg, #e8f5ee, #c8ecd8)', borderRadius: '50%', boxShadow: '0 6px 16px rgba(45,122,74,0.15), inset 0 2px 0 rgba(255,255,255,0.7)', opacity: 0.5 }} />
+
+      <div style={{ marginBottom: '2.5rem', textAlign: 'center', position: 'relative' }}>
         <div
           style={{
-            width: '5rem',
-            height: '5rem',
-            background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
-            borderRadius: '1.5rem',
+            width: '5.5rem',
+            height: '5.5rem',
+            background: 'linear-gradient(145deg, #f59060, #f07040)',
+            borderRadius: '2rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 1.25rem',
-            boxShadow: 'var(--shadow-btn)',
+            boxShadow:
+              '0 12px 32px rgba(240, 112, 64, 0.45), 0 4px 12px rgba(240, 112, 64, 0.30), inset 0 3px 0 rgba(255,255,255,0.35), inset 0 -3px 0 rgba(180,60,20,0.20)',
+            animation: 'clay-float 3s ease-in-out infinite',
           }}
         >
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="white"/>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
+              fill="white"
+            />
           </svg>
         </div>
         <h1
           style={{
-            fontSize: '2rem',
+            fontSize: '2.25rem',
             fontWeight: 900,
             color: 'var(--color-text-primary)',
             marginBottom: '0.375rem',
@@ -69,22 +107,23 @@ export const LoginPage = () => {
         >
           小日记
         </h1>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', fontWeight: 600 }}>
-          记录每一个温柔的瞬间
+        <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', fontWeight: 600 }}>
+          记录每一个温柔的瞬间 🌸
         </p>
       </div>
 
       <div
         style={{
-          background: 'rgba(255, 255, 255, 0.88)',
-          borderRadius: 'var(--radius-2xl)',
-          padding: '1.75rem 1.5rem',
-          boxShadow: '0 8px 40px rgba(180, 100, 40, 0.12)',
-          border: '1px solid var(--color-border)',
-          backdropFilter: 'blur(12px)',
+          background: 'linear-gradient(145deg, #ffffff, #fff8f2)',
+          borderRadius: '32px',
+          padding: '2rem 1.5rem',
+          boxShadow:
+            '0 16px 48px rgba(180, 100, 40, 0.16), 0 4px 16px rgba(180, 100, 40, 0.10), inset 0 2px 0 rgba(255,255,255,0.95), inset 0 -2px 0 rgba(180,100,40,0.06)',
+          border: '2px solid rgba(245, 220, 200, 0.6)',
+          position: 'relative',
         }}
       >
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
           <div>
             <label
               style={{
@@ -92,8 +131,8 @@ export const LoginPage = () => {
                 fontSize: '0.8125rem',
                 color: 'var(--color-text-secondary)',
                 marginBottom: '0.5rem',
-                fontWeight: 700,
-                letterSpacing: '0.02em',
+                fontWeight: 800,
+                letterSpacing: '0.03em',
               }}
             >
               用户名
@@ -103,29 +142,9 @@ export const LoginPage = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="输入你的昵称"
-              style={{
-                width: '100%',
-                height: '3rem',
-                padding: '0 1rem',
-                border: '1.5px solid var(--color-border)',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '0.9375rem',
-                outline: 'none',
-                background: 'var(--color-surface-2)',
-                color: 'var(--color-text-primary)',
-                fontWeight: 600,
-                transition: 'border-color 0.2s, box-shadow 0.2s',
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = 'var(--color-primary)';
-                e.target.style.boxShadow = '0 0 0 3px rgba(240, 112, 64, 0.15)';
-                e.target.style.background = '#fff';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = 'var(--color-border)';
-                e.target.style.boxShadow = 'none';
-                e.target.style.background = 'var(--color-surface-2)';
-              }}
+              style={clayInputStyle}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
             />
           </div>
 
@@ -136,8 +155,8 @@ export const LoginPage = () => {
                 fontSize: '0.8125rem',
                 color: 'var(--color-text-secondary)',
                 marginBottom: '0.5rem',
-                fontWeight: 700,
-                letterSpacing: '0.02em',
+                fontWeight: 800,
+                letterSpacing: '0.03em',
               }}
             >
               密码
@@ -147,42 +166,23 @@ export const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="输入密码"
-              style={{
-                width: '100%',
-                height: '3rem',
-                padding: '0 1rem',
-                border: '1.5px solid var(--color-border)',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '0.9375rem',
-                outline: 'none',
-                background: 'var(--color-surface-2)',
-                color: 'var(--color-text-primary)',
-                fontWeight: 600,
-                transition: 'border-color 0.2s, box-shadow 0.2s',
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = 'var(--color-primary)';
-                e.target.style.boxShadow = '0 0 0 3px rgba(240, 112, 64, 0.15)';
-                e.target.style.background = '#fff';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = 'var(--color-border)';
-                e.target.style.boxShadow = 'none';
-                e.target.style.background = 'var(--color-surface-2)';
-              }}
+              style={clayInputStyle}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
             />
           </div>
 
           {error && (
             <div
               style={{
-                background: '#fef2f2',
-                border: '1px solid #fecaca',
-                borderRadius: 'var(--radius-sm)',
-                padding: '0.625rem 0.875rem',
+                background: 'linear-gradient(145deg, #fff0f0, #ffe8e8)',
+                border: '2px solid #fecaca',
+                borderRadius: '16px',
+                padding: '0.75rem 1rem',
                 color: '#dc2626',
                 fontSize: '0.8125rem',
-                fontWeight: 600,
+                fontWeight: 700,
+                boxShadow: 'inset 0 2px 6px rgba(220,38,38,0.08)',
               }}
             >
               {error}
@@ -193,23 +193,25 @@ export const LoginPage = () => {
             type="submit"
             disabled={isLoading}
             style={{
-              height: '3rem',
+              height: '3.25rem',
               background: isLoading
-                ? 'var(--color-primary-pale)'
-                : 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
+                ? 'linear-gradient(145deg, #fde8d8, #fbd0b8)'
+                : 'linear-gradient(145deg, #f59060, #f07040)',
               border: 'none',
-              borderRadius: 'var(--radius-md)',
+              borderRadius: '18px',
               color: isLoading ? 'var(--color-text-muted)' : '#fff',
-              fontSize: '0.9375rem',
-              fontWeight: 800,
+              fontSize: '1rem',
+              fontWeight: 900,
               cursor: isLoading ? 'not-allowed' : 'pointer',
               marginTop: '0.25rem',
-              boxShadow: isLoading ? 'none' : 'var(--shadow-btn)',
+              boxShadow: isLoading
+                ? 'inset 0 2px 6px rgba(180,100,40,0.12)'
+                : '0 8px 24px rgba(240, 112, 64, 0.45), 0 3px 8px rgba(240, 112, 64, 0.30), inset 0 2px 0 rgba(255,255,255,0.35), inset 0 -2px 0 rgba(180,60,20,0.20)',
               letterSpacing: '0.04em',
-              transition: 'all 0.2s',
+              transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
             }}
           >
-            {isLoading ? '登录中...' : '登录'}
+            {isLoading ? '登录中...' : '登 录'}
           </button>
         </form>
       </div>
@@ -217,18 +219,19 @@ export const LoginPage = () => {
       <p
         style={{
           textAlign: 'center',
-          marginTop: '1.5rem',
+          marginTop: '1.75rem',
           color: 'var(--color-text-muted)',
           fontSize: '0.875rem',
           fontWeight: 600,
+          position: 'relative',
         }}
       >
         还没有账号？{' '}
         <Link
           to="/register"
-          style={{ color: 'var(--color-primary)', fontWeight: 800, textDecoration: 'none' }}
+          style={{ color: 'var(--color-primary)', fontWeight: 900, textDecoration: 'none' }}
         >
-          立即注册
+          立即注册 →
         </Link>
       </p>
     </div>

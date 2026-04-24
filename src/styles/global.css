@@ -1,32 +1,83 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
 
 :root {
-  --color-bg: #fdf6ee;
-  --color-bg-gradient: linear-gradient(160deg, #fdf6ee 0%, #fce8d5 100%);
+  /* 色彩系统 — 马卡龙粉彩 */
+  --color-bg: #fef3e8;
+  --color-bg-gradient: linear-gradient(160deg, #fff5ec 0%, #fde8d0 50%, #fcd8b8 100%);
   --color-surface: #ffffff;
-  --color-surface-2: #fef9f4;
-  --color-border: #f0e0cc;
-  --color-border-dashed: #e8c9a8;
+  --color-surface-2: #fff8f2;
+  --color-surface-raised: #fffaf5;
+  --color-border: #f5dcc8;
+  --color-border-dashed: #ecc8a8;
+
+  /* 主色 — 暖橙 */
   --color-primary: #f07040;
   --color-primary-light: #f59060;
   --color-primary-pale: #fde8d8;
+  --color-primary-deep: #d85828;
+
+  /* 强调色 */
   --color-accent: #e8956d;
   --color-accent-light: #f0a882;
+
+  /* 功能色 */
   --color-tag-bg: #fdecd8;
   --color-tag-text: #c06030;
+
+  /* 文字色 */
   --color-text-primary: #2d1f0e;
   --color-text-secondary: #7a5c3a;
   --color-text-muted: #b89070;
   --color-text-placeholder: #c8a880;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
-  --shadow-sm: 0 1px 4px rgba(180, 100, 40, 0.06);
-  --shadow-md: 0 4px 16px rgba(180, 100, 40, 0.08);
-  --shadow-lg: 0 8px 32px rgba(180, 100, 40, 0.12);
-  --shadow-btn: 0 6px 20px rgba(240, 112, 64, 0.4);
+
+  /* 圆角系统 — Claymorphism 极致圆润 */
+  --radius-xs: 10px;
+  --radius-sm: 14px;
+  --radius-md: 18px;
+  --radius-lg: 22px;
+  --radius-xl: 26px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  /* 阴影系统 — 双重阴影营造黏土悬浮感 */
+  --shadow-clay-sm:
+    0 2px 8px rgba(180, 100, 40, 0.10),
+    0 1px 3px rgba(180, 100, 40, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(180, 100, 40, 0.06);
+
+  --shadow-clay-md:
+    0 6px 20px rgba(180, 100, 40, 0.14),
+    0 2px 8px rgba(180, 100, 40, 0.10),
+    inset 0 2px 0 rgba(255, 255, 255, 0.90),
+    inset 0 -2px 0 rgba(180, 100, 40, 0.08);
+
+  --shadow-clay-lg:
+    0 12px 36px rgba(180, 100, 40, 0.18),
+    0 4px 12px rgba(180, 100, 40, 0.12),
+    inset 0 2px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -2px 0 rgba(180, 100, 40, 0.10);
+
+  --shadow-clay-btn:
+    0 8px 24px rgba(240, 112, 64, 0.45),
+    0 3px 8px rgba(240, 112, 64, 0.30),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 0 rgba(180, 60, 20, 0.20);
+
+  --shadow-clay-pressed:
+    0 2px 6px rgba(180, 100, 40, 0.12),
+    inset 0 2px 6px rgba(180, 100, 40, 0.15),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.50);
+
+  --shadow-clay-inset:
+    inset 0 3px 8px rgba(180, 100, 40, 0.12),
+    inset 0 1px 3px rgba(180, 100, 40, 0.08);
+
+  /* 兼容旧变量 */
+  --shadow-sm: var(--shadow-clay-sm);
+  --shadow-md: var(--shadow-clay-md);
+  --shadow-lg: var(--shadow-clay-lg);
+  --shadow-btn: var(--shadow-clay-btn);
 }
 
 html {
@@ -66,11 +117,27 @@ input, textarea, button {
   font-family: inherit;
 }
 
+/* Claymorphism 按钮交互 — 弹性按压效果 */
 button {
-  transition: opacity 0.15s, transform 0.15s;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
 button:active {
-  opacity: 0.85;
-  transform: scale(0.97);
+  transform: scale(0.94);
+  box-shadow: var(--shadow-clay-pressed) !important;
+}
+
+/* 加载动画 */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes clay-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@keyframes clay-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
 }

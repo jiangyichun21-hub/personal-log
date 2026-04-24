@@ -41,7 +41,6 @@ export const ProfilePage = () => {
   if (!currentUser) return null;
 
   const privateCount = journals.filter((j) => j.visibility === 'private').length;
-  const friendsCount = journals.filter((j) => j.visibility === 'friends').length;
   const publicCount = journals.filter((j) => j.visibility === 'public').length;
 
   const avatarUrl =
@@ -103,8 +102,21 @@ export const ProfilePage = () => {
     { label: '公开', value: publicCount },
   ];
 
+  const clayCardStyle: React.CSSProperties = {
+    background: 'linear-gradient(145deg, #ffffff, #fff8f2)',
+    borderRadius: '22px',
+    padding: '1rem 1.125rem',
+    border: '2px solid rgba(245, 220, 200, 0.7)',
+    cursor: 'pointer',
+    boxShadow:
+      '0 6px 20px rgba(180, 100, 40, 0.12), 0 2px 8px rgba(180, 100, 40, 0.08), inset 0 2px 0 rgba(255,255,255,0.90), inset 0 -2px 0 rgba(180,100,40,0.06)',
+    transition: 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    position: 'relative',
+    overflow: 'hidden',
+  };
+
   return (
-    <div className="page-container" style={{ background: '#f5f5f5' }}>
+    <div className="page-container" style={{ background: 'linear-gradient(160deg, #fff5ec 0%, #fde8d0 30%, #f5f5f5 60%)' }}>
       <div
         style={{
           position: 'sticky',
@@ -121,16 +133,16 @@ export const ProfilePage = () => {
         <button
           onClick={() => navigate('/settings')}
           style={{
-            background: 'rgba(255,255,255,0.85)',
-            border: '1px solid var(--color-border)',
+            background: 'linear-gradient(145deg, #ffffff, #fff8f2)',
+            border: '2px solid rgba(245, 220, 200, 0.8)',
             borderRadius: '50%',
-            width: '2.25rem',
-            height: '2.25rem',
+            width: '2.375rem',
+            height: '2.375rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            boxShadow: '0 1px 6px rgba(0,0,0,0.08)',
+            boxShadow: '0 4px 12px rgba(180,100,40,0.15), inset 0 1px 0 rgba(255,255,255,0.9)',
           }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -142,13 +154,31 @@ export const ProfilePage = () => {
       <div style={{ paddingBottom: '6rem', marginTop: '-3rem' }}>
         <div
           style={{
-            background: '#fff',
-            padding: '3.5rem 1.25rem 0',
+            margin: '0 1rem 1rem',
+            background: 'linear-gradient(145deg, #ffffff, #fff8f2)',
+            borderRadius: '28px',
+            padding: '3.5rem 1.25rem 1.25rem',
+            border: '2px solid rgba(245, 220, 200, 0.7)',
+            boxShadow: '0 10px 32px rgba(180,100,40,0.14), 0 4px 12px rgba(180,100,40,0.08), inset 0 2px 0 rgba(255,255,255,0.95)',
             cursor: 'pointer',
+            position: 'relative',
+            overflow: 'hidden',
           }}
           onClick={handleOpenEdit}
         >
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '0.875rem' }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '6px',
+              background: 'linear-gradient(90deg, var(--color-primary), var(--color-accent), #f0c060)',
+              borderRadius: '28px 28px 0 0',
+            }}
+          />
+
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.125rem' }}>
             <div style={{ position: 'relative', flexShrink: 0 }}>
               <img
                 src={avatarUrl}
@@ -157,16 +187,37 @@ export const ProfilePage = () => {
                   width: '5rem',
                   height: '5rem',
                   borderRadius: '50%',
-                  border: '2px solid var(--color-border)',
+                  border: '3px solid rgba(245,220,200,0.8)',
                   background: 'var(--color-surface-2)',
                   display: 'block',
                   objectFit: 'cover',
+                  boxShadow: '0 6px 18px rgba(180,100,40,0.18), inset 0 2px 0 rgba(255,255,255,0.5)',
                 }}
               />
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  width: '1.5rem',
+                  height: '1.5rem',
+                  background: 'linear-gradient(145deg, #f59060, #f07040)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '2px solid #fff',
+                  boxShadow: '0 3px 8px rgba(240,112,64,0.40)',
+                }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#fff" />
+                </svg>
+              </div>
             </div>
 
             <div style={{ flex: 1, minWidth: 0, paddingTop: '0.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem' }}>
                 <h2 style={{
                   fontSize: '1.125rem',
                   fontWeight: 900,
@@ -180,13 +231,15 @@ export const ProfilePage = () => {
                   {currentUser.username}
                 </h2>
                 <span style={{
-                  fontSize: '0.75rem',
+                  fontSize: '0.6875rem',
                   color: 'var(--color-primary)',
-                  fontWeight: 700,
-                  background: 'var(--color-primary-pale)',
-                  borderRadius: '0.75rem',
-                  padding: '0.125rem 0.5rem',
+                  fontWeight: 800,
+                  background: 'linear-gradient(145deg, #fdecd8, #fbd8b8)',
+                  borderRadius: '999px',
+                  padding: '0.15rem 0.5rem',
                   flexShrink: 0,
+                  boxShadow: '0 2px 6px rgba(240,112,64,0.20), inset 0 1px 0 rgba(255,255,255,0.8)',
+                  border: '1.5px solid rgba(240,200,152,0.8)',
                 }}>
                   编辑资料
                 </span>
@@ -208,7 +261,7 @@ export const ProfilePage = () => {
                   </span>
                 )}
               </p>
-              <span style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
+              <span style={{ fontSize: '0.6875rem', color: 'var(--color-text-placeholder)', fontWeight: 600 }}>
                 注册于 {dayjs(currentUser.createdAt).format('YYYY年MM月')}
               </span>
             </div>
@@ -217,12 +270,15 @@ export const ProfilePage = () => {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '2rem',
-            paddingBottom: '1rem',
-            paddingLeft: '0.25rem',
+            gap: '0',
+            background: 'linear-gradient(145deg, #fdecd8, #fbd8b8)',
+            borderRadius: '18px',
+            padding: '0.75rem 0',
+            border: '2px solid rgba(245,220,200,0.8)',
+            boxShadow: '0 4px 12px rgba(180,100,40,0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
           }}>
-            {statItems.map((item) => (
-              <div key={item.label} style={{ textAlign: 'center' }}>
+            {statItems.map((item, index) => (
+              <div key={item.label} style={{ flex: 1, textAlign: 'center', borderRight: index < statItems.length - 1 ? '1.5px solid rgba(240,200,152,0.6)' : 'none' }}>
                 <div style={{
                   fontSize: '1.25rem',
                   fontWeight: 900,
@@ -235,8 +291,8 @@ export const ProfilePage = () => {
                 <div style={{
                   fontSize: '0.6875rem',
                   color: 'var(--color-text-muted)',
-                  fontWeight: 600,
-                  marginTop: '0.125rem',
+                  fontWeight: 700,
+                  marginTop: '0.2rem',
                 }}>
                   {item.label}
                 </div>
@@ -245,80 +301,106 @@ export const ProfilePage = () => {
           </div>
         </div>
 
-        <div
-          style={{
-            borderTop: '1px solid var(--color-border)',
-            borderBottom: '1px solid var(--color-border)',
-            background: '#fff',
-            padding: '0.75rem 1.25rem 0.5rem',
-            marginTop: '0.75rem',
-          }}
-        >
-          <span style={{
-            fontSize: '0.9375rem',
-            fontWeight: 800,
-            color: 'var(--color-text-primary)',
-            borderBottom: '2.5px solid var(--color-primary)',
-            paddingBottom: '0.375rem',
-            display: 'inline-block',
-          }}>
-            全部日记
-          </span>
-        </div>
+        <div style={{ padding: '0 1rem 0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <span style={{
+              fontSize: '0.875rem',
+              fontWeight: 900,
+              color: 'var(--color-text-primary)',
+              letterSpacing: '-0.01em',
+            }}>
+              全部日记
+            </span>
+            <span style={{
+              background: 'linear-gradient(145deg, #fdecd8, #fbd8b8)',
+              color: 'var(--color-primary)',
+              borderRadius: '999px',
+              padding: '0.1rem 0.5rem',
+              fontSize: '0.6875rem',
+              fontWeight: 900,
+              boxShadow: '0 2px 6px rgba(240,112,64,0.20), inset 0 1px 0 rgba(255,255,255,0.8)',
+            }}>
+              {journals.length}
+            </span>
+          </div>
 
-        {isLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 1rem' }}>
-            <div style={{ width: '2rem', height: '2rem', border: '3px solid var(--color-primary-pale)', borderTop: '3px solid var(--color-primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-          </div>
-        ) : journals.length === 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem 1rem', gap: '0.75rem' }}>
-            <div style={{ width: '3.5rem', height: '3.5rem', background: 'var(--color-primary-pale)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="var(--color-primary)" />
-              </svg>
+          {isLoading ? (
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 1rem' }}>
+              <div style={{
+                width: '2.5rem',
+                height: '2.5rem',
+                border: '3px solid rgba(245,220,200,0.8)',
+                borderTop: '3px solid var(--color-primary)',
+                borderRadius: '50%',
+                animation: 'spin 0.8s linear infinite',
+              }} />
             </div>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', fontWeight: 600 }}>
-              还没有日记，点击下方按钮开始记录
-            </p>
-          </div>
-        ) : (
-          <div style={{ padding: '0.75rem 0.875rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-            {journals.map((journal) => (
-              <div
-                key={journal.id}
-                onClick={(e) => { e.stopPropagation(); navigate(`/journal/${journal.id}`); }}
-                style={{
-                  background: '#fff',
-                  borderRadius: 'var(--radius-lg)',
-                  padding: '1rem 1.125rem',
-                  border: '1px solid var(--color-border)',
-                  cursor: 'pointer',
-                  boxShadow: 'var(--shadow-sm)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'transform 0.15s, box-shadow 0.15s',
-                }}
-                onTouchStart={(e) => { e.currentTarget.style.transform = 'scale(0.985)'; e.currentTarget.style.boxShadow = 'none'; }}
-                onTouchEnd={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}
-              >
-                <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '3px', background: 'linear-gradient(to bottom, var(--color-primary), var(--color-accent))', borderRadius: '3px 0 0 3px' }} />
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.375rem', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--color-text-primary)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {journal.title || '无标题'}
-                  </h3>
-                  <VisibilityBadge visibility={journal.visibility} />
-                </div>
-                <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: 1.65, marginBottom: '0.5rem', fontWeight: 500 }}>
-                  {journal.content || '暂无内容'}
-                </p>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
-                  {dayjs(journal.createdAt).format('MM月DD日 HH:mm')}
-                </span>
+          ) : journals.length === 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem 1rem', gap: '0.875rem' }}>
+              <div style={{
+                width: '4rem',
+                height: '4rem',
+                background: 'linear-gradient(145deg, #fdecd8, #fbd8b8)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 6px 18px rgba(180,100,40,0.15), inset 0 2px 0 rgba(255,255,255,0.8)',
+                animation: 'clay-float 3s ease-in-out infinite',
+              }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="var(--color-primary)" />
+                </svg>
               </div>
-            ))}
-            <div style={{ height: '0.5rem' }} />
-          </div>
-        )}
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', fontWeight: 700, textAlign: 'center' }}>
+                还没有日记，点击下方按钮开始记录
+              </p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {journals.map((journal) => (
+                <div
+                  key={journal.id}
+                  onClick={() => navigate(`/journal/${journal.id}`)}
+                  style={clayCardStyle}
+                  onTouchStart={(e) => {
+                    e.currentTarget.style.transform = 'scale(0.97)';
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(180,100,40,0.10), inset 0 2px 6px rgba(180,100,40,0.10)';
+                  }}
+                  onTouchEnd={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(180, 100, 40, 0.12), 0 2px 8px rgba(180, 100, 40, 0.08), inset 0 2px 0 rgba(255,255,255,0.90), inset 0 -2px 0 rgba(180,100,40,0.06)';
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      right: 0,
+                      height: '4px',
+                      background: 'linear-gradient(90deg, var(--color-primary), var(--color-accent))',
+                      borderRadius: '22px 22px 0 0',
+                    }}
+                  />
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.375rem', gap: '0.5rem', marginTop: '0.25rem' }}>
+                    <h3 style={{ fontSize: '0.9375rem', fontWeight: 900, color: 'var(--color-text-primary)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {journal.title || '无标题'}
+                    </h3>
+                    <VisibilityBadge visibility={journal.visibility} />
+                  </div>
+                  <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: 1.65, marginBottom: '0.5rem', fontWeight: 500 }}>
+                    {journal.content || '暂无内容'}
+                  </p>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 700 }}>
+                    {dayjs(journal.createdAt).format('MM月DD日 HH:mm')}
+                  </span>
+                </div>
+              ))}
+              <div style={{ height: '0.5rem' }} />
+            </div>
+          )}
+        </div>
       </div>
 
       <button
@@ -331,17 +413,17 @@ export const ProfilePage = () => {
           width: '3.5rem',
           height: '3.5rem',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
+          background: 'linear-gradient(145deg, #f59060, #f07040)',
           border: 'none',
-          boxShadow: '0 6px 24px rgba(240, 112, 64, 0.45)',
+          boxShadow: '0 10px 28px rgba(240, 112, 64, 0.50), inset 0 3px 0 rgba(255,255,255,0.30), inset 0 -3px 0 rgba(180,60,20,0.20)',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 99,
-          transition: 'transform 0.15s, box-shadow 0.15s',
+          transition: 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
         }}
-        onTouchStart={(e) => { e.currentTarget.style.transform = 'translateX(-50%) scale(0.92)'; }}
+        onTouchStart={(e) => { e.currentTarget.style.transform = 'translateX(-50%) scale(0.90)'; }}
         onTouchEnd={(e) => { e.currentTarget.style.transform = 'translateX(-50%) scale(1)'; }}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -358,9 +440,9 @@ export const ProfilePage = () => {
             style={{
               position: 'fixed',
               inset: 0,
-              background: 'rgba(0,0,0,0.45)',
+              background: 'rgba(45, 31, 14, 0.45)',
               zIndex: 200,
-              backdropFilter: 'blur(2px)',
+              backdropFilter: 'blur(8px)',
             }}
           />
           <div
@@ -371,31 +453,29 @@ export const ProfilePage = () => {
               transform: 'translateX(-50%)',
               width: '100%',
               maxWidth: '480px',
-              background: '#fff',
-              borderRadius: '1.25rem 1.25rem 0 0',
+              background: 'linear-gradient(145deg, #ffffff, #fff8f2)',
+              borderRadius: '32px 32px 0 0',
               zIndex: 201,
               padding: '0 1.25rem 2rem',
-              boxShadow: '0 -8px 40px rgba(0,0,0,0.18)',
+              boxShadow: '0 -8px 32px rgba(180,100,40,0.18), inset 0 2px 0 rgba(255,255,255,0.9)',
+              border: '2px solid rgba(245,220,200,0.6)',
+              borderBottom: 'none',
               maxHeight: '85vh',
               overflowY: 'auto',
             }}
           >
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              padding: '0.75rem 0 0.5rem',
-            }}>
-              <div style={{ width: '2.5rem', height: '0.25rem', background: 'var(--color-border)', borderRadius: '2px' }} />
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '0.875rem 0 0.5rem' }}>
+              <div style={{ width: '2.5rem', height: '4px', background: 'rgba(245,220,200,0.9)', borderRadius: '2px', boxShadow: 'inset 0 1px 2px rgba(180,100,40,0.15)' }} />
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
               <button
                 onClick={handleCloseEdit}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 600, padding: '0.25rem 0' }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 700, padding: '0.25rem 0' }}
               >
                 取消
               </button>
-              <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>编辑资料</span>
+              <span style={{ fontSize: '1rem', fontWeight: 900, color: 'var(--color-text-primary)' }}>编辑资料</span>
               <button
                 onClick={handleSaveProfile}
                 disabled={isSaving}
@@ -405,7 +485,7 @@ export const ProfilePage = () => {
                   cursor: isSaving ? 'not-allowed' : 'pointer',
                   fontSize: '0.9375rem',
                   color: isSaving ? 'var(--color-text-muted)' : 'var(--color-primary)',
-                  fontWeight: 800,
+                  fontWeight: 900,
                   padding: '0.25rem 0',
                 }}
               >
@@ -426,8 +506,9 @@ export const ProfilePage = () => {
                     height: '5.5rem',
                     borderRadius: '50%',
                     objectFit: 'cover',
-                    border: '2px solid var(--color-border)',
+                    border: '3px solid rgba(245,220,200,0.8)',
                     display: 'block',
+                    boxShadow: '0 6px 18px rgba(180,100,40,0.18)',
                   }}
                 />
                 <div style={{
@@ -436,13 +517,13 @@ export const ProfilePage = () => {
                   right: 0,
                   width: '1.75rem',
                   height: '1.75rem',
-                  background: 'var(--color-primary)',
+                  background: 'linear-gradient(145deg, #f59060, #f07040)',
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   border: '2px solid #fff',
-                  boxShadow: '0 2px 8px rgba(240,112,64,0.4)',
+                  boxShadow: '0 3px 10px rgba(240,112,64,0.45)',
                 }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                     <path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z" fill="#fff" />
@@ -450,7 +531,7 @@ export const ProfilePage = () => {
                   </svg>
                 </div>
               </div>
-              <span style={{ marginTop: '0.5rem', fontSize: '0.8125rem', color: 'var(--color-primary)', fontWeight: 600 }}>
+              <span style={{ marginTop: '0.625rem', fontSize: '0.8125rem', color: 'var(--color-primary)', fontWeight: 700 }}>
                 点击更换头像
               </span>
               <input
@@ -462,14 +543,18 @@ export const ProfilePage = () => {
               />
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                borderBottom: '1px solid var(--color-border)',
-                paddingBottom: '0.875rem',
+                background: 'linear-gradient(145deg, #ffffff, #fff8f2)',
+                borderRadius: '18px 18px 0 0',
+                border: '2px solid rgba(245,220,200,0.7)',
+                borderBottom: '1px solid rgba(245,220,200,0.5)',
+                padding: '0.875rem 1rem',
+                boxShadow: 'inset 0 2px 6px rgba(180,100,40,0.06)',
               }}>
-                <label style={{ width: '4.5rem', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 600, flexShrink: 0 }}>
+                <label style={{ width: '4rem', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 700, flexShrink: 0 }}>
                   昵称
                 </label>
                 <input
@@ -483,7 +568,7 @@ export const ProfilePage = () => {
                     outline: 'none',
                     fontSize: '0.9375rem',
                     color: 'var(--color-text-primary)',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     background: 'transparent',
                     textAlign: 'right',
                   }}
@@ -493,10 +578,14 @@ export const ProfilePage = () => {
               <div style={{
                 display: 'flex',
                 alignItems: 'flex-start',
-                borderBottom: '1px solid var(--color-border)',
-                paddingBottom: '0.875rem',
+                background: 'linear-gradient(145deg, #ffffff, #fff8f2)',
+                borderRadius: '0 0 18px 18px',
+                border: '2px solid rgba(245,220,200,0.7)',
+                borderTop: 'none',
+                padding: '0.875rem 1rem',
+                boxShadow: 'inset 0 2px 6px rgba(180,100,40,0.06)',
               }}>
-                <label style={{ width: '4.5rem', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 600, flexShrink: 0, paddingTop: '0.125rem' }}>
+                <label style={{ width: '4rem', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 700, flexShrink: 0, paddingTop: '0.125rem' }}>
                   简介
                 </label>
                 <textarea
@@ -523,7 +612,17 @@ export const ProfilePage = () => {
             </div>
 
             {saveError && (
-              <div style={{ marginTop: '1rem', padding: '0.625rem 0.875rem', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 'var(--radius-sm)', color: '#dc2626', fontSize: '0.8125rem', fontWeight: 600 }}>
+              <div style={{
+                marginTop: '1rem',
+                padding: '0.75rem 1rem',
+                background: 'linear-gradient(145deg, #fff0f0, #ffe8e8)',
+                border: '2px solid #fecaca',
+                borderRadius: '16px',
+                color: '#dc2626',
+                fontSize: '0.8125rem',
+                fontWeight: 700,
+                boxShadow: 'inset 0 2px 6px rgba(220,38,38,0.08)',
+              }}>
                 {saveError}
               </div>
             )}

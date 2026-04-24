@@ -15,7 +15,7 @@ const navItems = [
   },
   {
     path: '/profile',
-    label: '我的日记',
+    label: '我的',
     icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
         <path
@@ -40,17 +40,20 @@ export const BottomNav = () => {
         transform: 'translateX(-50%)',
         width: '100%',
         maxWidth: '480px',
-        background: 'rgba(253, 246, 238, 0.97)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderTop: '1px solid var(--color-border)',
+        background: 'rgba(255, 245, 236, 0.96)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        borderTop: '2px solid rgba(245, 220, 200, 0.7)',
         display: 'flex',
         zIndex: 100,
         paddingBottom: 'env(safe-area-inset-bottom)',
+        boxShadow: '0 -4px 20px rgba(180, 100, 40, 0.10), inset 0 1px 0 rgba(255,255,255,0.8)',
       }}
     >
       {navItems.map((item) => {
-        const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
+        const isActive =
+          location.pathname === item.path ||
+          location.pathname.startsWith(item.path + '/');
         return (
           <button
             key={item.path}
@@ -73,23 +76,35 @@ export const BottomNav = () => {
               <div
                 style={{
                   position: 'absolute',
-                  top: '0.4rem',
-                  width: '2.25rem',
-                  height: '2.25rem',
-                  background: 'var(--color-primary-pale)',
+                  top: '0.35rem',
+                  width: '2.75rem',
+                  height: '2.75rem',
+                  background: 'linear-gradient(145deg, #fde8d8, #fbd0b0)',
                   borderRadius: '50%',
                   zIndex: 0,
+                  boxShadow:
+                    '0 4px 12px rgba(240, 112, 64, 0.20), inset 0 2px 0 rgba(255,255,255,0.70), inset 0 -2px 0 rgba(180,80,30,0.10)',
                 }}
               />
             )}
-            <span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span
+              style={{
+                position: 'relative',
+                zIndex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transform: isActive ? 'scale(1.12)' : 'scale(1)',
+              }}
+            >
               {item.icon(isActive)}
             </span>
             <span
               style={{
                 fontSize: '0.625rem',
                 color: isActive ? 'var(--color-primary)' : 'var(--color-text-muted)',
-                fontWeight: isActive ? 800 : 600,
+                fontWeight: isActive ? 900 : 600,
                 position: 'relative',
                 zIndex: 1,
                 letterSpacing: '0.02em',
